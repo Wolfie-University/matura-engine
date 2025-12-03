@@ -5,6 +5,7 @@ const QuadraticGenerator = require("./src/engine/generators/functions/QuadraticG
 const OptimizationGenerator = require("./src/engine/generators/functions/OptimizationGenerator");
 const AnalyticGenerator = require("./src/engine/generators/geometry/AnalyticGenerator");
 const SequencesGenerator = require("./src/engine/generators/sequences/SequencesGenerator");
+const AlgebraGenerator = require("./src/engine/generators/algebra/AlgebraGenerator");
 
 const problems = require("./problems.json");
 
@@ -191,5 +192,17 @@ app.get("/api/v2/generator/sequences", (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Błąd generatora ciągów" });
+  }
+});
+
+app.get("/api/v2/generator/algebra", (req, res) => {
+  try {
+    const difficulty = req.query.difficulty || "medium";
+    const generator = new AlgebraGenerator(difficulty);
+    const problem = generator.generate();
+    res.json(problem);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Błąd generatora algebry" });
   }
 });
