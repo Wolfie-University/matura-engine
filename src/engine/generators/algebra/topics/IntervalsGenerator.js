@@ -1,0 +1,127 @@
+const BaseGenerator = require("../../../core/BaseGenerator");
+const MathUtils = require("../../../utils/MathUtils");
+
+class IntervalsGenerator extends BaseGenerator {
+  generateAbsValueProblem() {
+    const a = MathUtils.randomInt(-5, 5);
+    const b = MathUtils.randomInt(1, 6);
+    const sign = MathUtils.randomElement(["<", ">", "\\le", "\\ge"]);
+    const x1 = a - b;
+    const x2 = a + b;
+    const isInside = sign === "<" || sign === "\\le";
+    const isClosed = sign === "\\le" || sign === "\\ge";
+    const bL = isClosed ? "\\langle" : "(";
+    const bR = isClosed ? "\\rangle" : ")";
+    const interval = isInside
+      ? `${bL} ${x1}, ${x2} ${bR}`
+      : `(- \\infty, ${x1} ${bR} \\cup ${bL} ${x2}, \\infty)`;
+
+    return this.createResponse({
+      question:
+        "Zbiór rozwiązań nierówności jest zaznaczony na osi liczbowej. Wybierz poprawny zbiór.",
+      latex: `|x - (${a})| ${sign} ${b}`
+        .replace("- (-", "+ ")
+        .replace("- (", "- "),
+      image: this.generateNumberLineSVG({
+        center: a,
+        points: [x1, x2],
+        isInside,
+        isClosed,
+        type: "inequality",
+      }),
+      variables: { a, b, sign },
+      correctAnswer: `x \\in ${interval}`,
+      distractors: [
+        isInside
+          ? `x \\in (- \\infty, ${x1} ${bR} \\cup ${bL} ${x2}, \\infty)`
+          : `x \\in ${bL} ${x1}, ${x2} ${bR}`,
+        `x \\in ${bL} ${-b}, ${b} ${bR}`,
+      ],
+      steps: [
+        `Środek $$${a}$$, promień $$${b}$$.`,
+        `Odległość od $$${a}$$ ${isInside ? "mniejsza" : "większa"} niż $$${b}$$.`,
+      ],
+    });
+  }
+
+  generateIntervalOpsProblem() {
+    const a = MathUtils.randomInt(-5, 2);
+    const b = a + MathUtils.randomInt(-2, 4);
+    const closedA = MathUtils.randomElement([true, false]);
+    const closedB = MathUtils.randomElement([true, false]);
+    const op = MathUtils.randomElement(["union", "intersection"]);
+    const opSymbol = op === "union" ? "\\cup" : "\\cap";
+    const bracketA = closedA ? "\\rangle" : ")";
+    const bracketB = closedB ? "\\langle" : "(";
+
+    let result = "";
+    if (b > a) {
+      if (op === "intersection") result = `\\emptyset`;
+      else
+        result = `(- \\infty, ${a} ${bracketA} \\cup ${bracketB} ${b}, \\infty)`;
+    } else {
+      if (op === "intersection") result = `${bracketB} ${b}, ${a} ${bracketA}`;
+      else result = `\\mathbb{R}`;
+    }
+
+    return this.createResponse({
+      question: `Wyznacz $$A ${opSymbol} B$$ dla przedziałów z rysunku.`,
+      latex: `A ${opSymbol} B`,
+      image: this.generateNumberLineSVG({
+        type: "sets",
+        a,
+        b,
+        closedA,
+        closedB,
+        op,
+      }),
+      variables: { a, b, op },
+      correctAnswer: result,
+      distractors: [
+        `\\emptyset`,
+        `\\mathbb{R}`,
+        `(- \\infty, ${b} ${bracketB}`,
+      ],
+      steps: [
+        `Zaznaczamy przedziały.`,
+        b > a ? `Rozłączne.` : `Nachodzą na siebie.`,
+      ],
+    });
+  }
+
+  generateNumberLineSVG(params) {
+    const size = 300;
+    const midY = 50;
+    const scale = 20;
+    const center = params.center || 0;
+    const toSVG = (val) => size / 2 + (val - center) * scale;
+    let content = "";
+
+    if (params.type === "inequality") {
+      const p1 = toSVG(params.points[0]);
+      const p2 = toSVG(params.points[1]);
+      const color = "blue";
+      if (params.isInside) {
+        content += `<line x1="${p1}" y1="${midY}" x2="${p2}" y2="${midY}" stroke="${color}" stroke-width="4" />`;
+      } else {
+        content += `<line x1="0" y1="${midY}" x2="${p1}" y2="${midY}" stroke="${color}" stroke-width="4" /><line x1="${p2}" y1="${midY}" x2="${size}" y2="${midY}" stroke="${color}" stroke-width="4" />`;
+      }
+      const fill = params.isClosed ? color : "white";
+      content += `<circle cx="${p1}" cy="${midY}" r="5" fill="${fill}" stroke="${color}" stroke-width="2"/><circle cx="${p2}" cy="${midY}" r="5" fill="${fill}" stroke="${color}" stroke-width="2"/>`;
+      content += `<text x="${p1 - 5}" y="${midY + 25}" font-size="14">${params.points[0]}</text><text x="${p2 - 5}" y="${midY + 25}" font-size="14">${params.points[1]}</text>`;
+    } else if (params.type === "sets") {
+      const { a, b, closedA, closedB } = params;
+      const pA = toSVG(a);
+      const pB = toSVG(b);
+      content += `<line x1="0" y1="${midY - 10}" x2="${pA}" y2="${midY - 10}" stroke="blue" stroke-width="3" />`;
+      content += `<circle cx="${pA}" cy="${midY - 10}" r="4" fill="${closedA ? "blue" : "white"}" stroke="blue" stroke-width="2"/>`;
+      content += `<text x="${pA - 5}" y="${midY - 25}" font-size="12" fill="blue">${a}</text>`;
+      content += `<line x1="${pB}" y1="${midY + 10}" x2="${size}" y2="${midY + 10}" stroke="red" stroke-width="3" />`;
+      content += `<circle cx="${pB}" cy="${midY + 10}" r="4" fill="${closedB ? "red" : "white"}" stroke="red" stroke-width="2"/>`;
+      content += `<text x="${pB - 5}" y="${midY + 35}" font-size="12" fill="red">${b}</text>`;
+    }
+    return `<svg viewBox="0 0 ${size} 100" xmlns="http://www.w3.org/2000/svg" style="border:1px solid #ddd; background:#fff"><line x1="0" y1="${midY}" x2="${size}" y2="${midY}" stroke="#333" stroke-width="1" /><line x1="${size - 10}" y1="${midY - 5}" x2="${size}" y2="${midY}" stroke="#333" stroke-width="1" /><line x1="${size - 10}" y1="${midY + 5}" x2="${size}" y2="${midY}" stroke="#333" stroke-width="1" />${content}</svg>`;
+  }
+}
+
+module.exports = IntervalsGenerator;
