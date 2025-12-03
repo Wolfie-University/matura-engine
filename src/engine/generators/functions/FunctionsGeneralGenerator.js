@@ -2,11 +2,11 @@ const BaseGenerator = require("../../core/BaseGenerator");
 const MathUtils = require("../../utils/MathUtils");
 
 // Import sub-generators
-const LinearFunctionGenerator = require("./topics/LinearFunctionGenerator");
-const FunctionPropertiesGenerator = require("./topics/FunctionPropertiesGenerator");
-const TransformationsGenerator = require("./topics/TransformationsGenerator");
-const ExponentialFunctionGenerator = require("./topics/ExponentialFunctionGenerator");
-const PiecewiseFunctionGenerator = require("./topics/PiecewiseFunctionGenerator");
+const LinearFunctionGenerator = require("./topics/general/LinearFunctionGenerator");
+const FunctionPropertiesGenerator = require("./topics/general/FunctionPropertiesGenerator");
+const TransformationsGenerator = require("./topics/general/TransformationsGenerator");
+const ExponentialFunctionGenerator = require("./topics/general/ExponentialFunctionGenerator");
+const PiecewiseFunctionGenerator = require("./topics/general/PiecewiseFunctionGenerator");
 
 class FunctionsGeneralGenerator extends BaseGenerator {
   constructor(difficulty) {

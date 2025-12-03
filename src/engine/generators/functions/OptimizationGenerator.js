@@ -2,8 +2,8 @@ const BaseGenerator = require("../../core/BaseGenerator");
 const MathUtils = require("../../utils/MathUtils");
 
 // Import sub-generators
-const EconomicOptimizationGenerator = require("./topics/EconomicOptimizationGenerator");
-const GeometricOptimizationGenerator = require("./topics/GeometricOptimizationGenerator");
+const EconomicOptimizationGenerator = require("./topics/optimization/EconomicOptimizationGenerator");
+const GeometricOptimizationGenerator = require("./topics/optimization/GeometricOptimizationGenerator");
 
 class OptimizationGenerator extends BaseGenerator {
   constructor(difficulty) {

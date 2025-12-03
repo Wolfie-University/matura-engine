@@ -1,5 +1,5 @@
-const BaseGenerator = require("../../../core/BaseGenerator");
-const MathUtils = require("../../../utils/MathUtils");
+const BaseGenerator = require("../../../../core/BaseGenerator");
+const MathUtils = require("../../../../utils/MathUtils");
 
 class GeometricOptimizationGenerator extends BaseGenerator {
   generateFencingProblem() {
