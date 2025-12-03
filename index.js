@@ -6,6 +6,7 @@ const OptimizationGenerator = require("./src/engine/generators/functions/Optimiz
 const AnalyticGenerator = require("./src/engine/generators/geometry/AnalyticGenerator");
 const SequencesGenerator = require("./src/engine/generators/sequences/SequencesGenerator");
 const AlgebraGenerator = require("./src/engine/generators/algebra/AlgebraGenerator");
+const PlanimetryGenerator = require("./src/engine/generators/geometry/PlanimetryGenerator");
 
 const problems = require("./problems.json");
 
@@ -204,5 +205,17 @@ app.get("/api/v2/generator/algebra", (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Błąd generatora algebry" });
+  }
+});
+
+app.get("/api/v2/generator/planimetry", (req, res) => {
+  try {
+    const difficulty = req.query.difficulty || "medium";
+    const generator = new PlanimetryGenerator(difficulty);
+    const problem = generator.generate();
+    res.json(problem);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Błąd generatora planimetrii" });
   }
 });
