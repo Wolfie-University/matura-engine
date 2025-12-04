@@ -26,17 +26,64 @@ const ProbabilityGenerator = require("./src/engine/generators/statistics/Probabi
 
 const ExamGenerator = require("./src/engine/generators/ExamGenerator");
 
+const AllGenerators = [
+  AlgebraGenerator,
+  FunctionsGeneralGenerator,
+  QuadraticGenerator,
+  OptimizationGenerator,
+  SequencesGenerator,
+  AnalyticGenerator,
+  PlanimetryGenerator,
+  StereometryGenerator,
+  TrigonometryGenerator,
+  StatisticsGenerator,
+  CombinatoricsGenerator,
+  ProbabilityGenerator,
+];
+
 app.use(cors());
 
-const handleRequest = (GeneratorClass, req, res) => {
+/**
+ * helper to handle requests with difficulty and count parameters
+ * @param {Class} GeneratorClass - generator class to use (optional for random)
+ * @param {Object} req - express request object
+ * @param {Object} res - express response object
+ * @param {Boolean} isRandomMode - if true, picks a random generator for each iteration
+ */
+const handleRequest = (GeneratorClass, req, res, isRandomMode = false) => {
   try {
     const difficulty = req.query.difficulty || "medium";
-    const generator = new GeneratorClass(difficulty);
-    const problem = generator.generate();
-    res.json(problem);
+    const countParam = req.query.count;
+
+    let count = countParam ? parseInt(countParam, 10) : 1;
+    if (isNaN(count) || count < 1) count = 1;
+    if (count > 50) count = 50;
+
+    const problems = [];
+
+    for (let i = 0; i < count; i++) {
+      let generator;
+
+      if (isRandomMode) {
+        const RandomClass =
+          AllGenerators[Math.floor(Math.random() * AllGenerators.length)];
+        generator = new RandomClass(difficulty);
+      } else {
+        generator = new GeneratorClass(difficulty);
+      }
+
+      const problem = generator.generate();
+      problems.push(problem);
+    }
+
+    if (countParam) {
+      res.json(problems);
+    } else {
+      res.json(problems[0]);
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Błąd generatora", details: error.message });
+    res.status(500).json({ error: "Generator Error", details: error.message });
   }
 };
 
@@ -84,6 +131,10 @@ app.get("/api/v2/generator/combinatorics", (req, res) =>
 );
 app.get("/api/v2/generator/probability", (req, res) =>
   handleRequest(ProbabilityGenerator, req, res),
+);
+
+app.get("/api/v2/generator/random", (req, res) =>
+  handleRequest(null, req, res, true),
 );
 
 app.get("/api/v2/exam/full", (req, res) => {
