@@ -18,8 +18,8 @@ The system generates problem content, answers, step-by-step solutions in **LaTeX
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/Wolfie-University/math-problems-api.git
-    cd math-problems-api
+    git clone https://github.com/Wolfie-University/matura-engine.git
+    cd matura-engine
     ```
 
 2.  **Install dependencies:**
