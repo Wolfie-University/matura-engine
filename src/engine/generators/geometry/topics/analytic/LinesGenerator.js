@@ -4,10 +4,41 @@ const AnalyticSVGUtils = require("./AnalyticSVGUtils");
 
 class LinesGenerator extends BaseGenerator {
   generateLineThroughTwoPoints() {
-    const { A, B, a, b } = this.generateNiceLinePoints();
+    // y = ax + b through A, B
+    let dxRange, dyRange;
+
+    if (this.difficulty === "easy") {
+      dxRange = [1, 1];
+      dyRange = [-3, 3];
+    } else if (this.difficulty === "hard") {
+      dxRange = [2, 5];
+      dyRange = [-5, 5];
+    } else {
+      dxRange = [1, 3];
+      dyRange = [-4, 4];
+    }
+
+    const x1 = MathUtils.randomInt(-5, 5);
+    const y1 = MathUtils.randomInt(-5, 5);
+    const dx = MathUtils.randomInt(dxRange[0], dxRange[1]);
+    const dy = MathUtils.randomInt(dyRange[0], dyRange[1]);
+
+    if (dx === 0) return this.generateLineThroughTwoPoints();
+    if (dy === 0 && this.difficulty !== "easy")
+      return this.generateLineThroughTwoPoints();
+
+    const x2 = x1 + dx;
+    const y2 = y1 + dy;
+    const a = dy / dx;
+    const b = y1 - a * x1;
+
+    const A = { x: x1, y: y1 };
+    const B = { x: x2, y: y2 };
+
     const eq = this.formatLineEquation(a, b);
+
     return this.createResponse({
-      question: "Równanie prostej przez punkty:",
+      question: "Równanie prostej przechodzącej przez punkty:",
       latex: `A=(${A.x}, ${A.y}), B=(${B.x}, ${B.y})`,
       image: AnalyticSVGUtils.generateSVG({ type: "line", A, B }),
       variables: { A, B, a, b },
@@ -17,7 +48,11 @@ class LinesGenerator extends BaseGenerator {
         `y = ${this.formatLineEquation(a, -b)}`,
         `y = ${this.formatLineEquation(b, a)}`,
       ],
-      steps: [`$$a = \\frac{${B.y}-${A.y}}{${B.x}-${A.x}}$$`, `$$y = ${eq}$$`],
+      steps: [
+        `$$a = \\frac{y_B - y_A}{x_B - x_A} = \\frac{${B.y}-${A.y}}{${B.x}-${A.x}} = ${this.fractionToLatex(a)}$$`,
+        `$$b = y_A - a x_A = ${A.y} - (${this.fractionToLatex(a)})\\cdot${A.x} = ${this.fractionToLatex(b)}$$`,
+        `$$y = ${eq}$$`,
+      ],
     });
   }
 
@@ -29,22 +64,55 @@ class LinesGenerator extends BaseGenerator {
   }
 
   generateRelativeLine(mode) {
-    const a1 = MathUtils.randomInt(-3, 3) || 1;
-    const b1 = 2;
-    const P = { x: 2, y: 3 };
+    let aNumRange, aDenRange;
+
+    if (this.difficulty === "easy") {
+      aNumRange = [-3, 3];
+      aDenRange = [1, 1];
+    } else if (this.difficulty === "hard") {
+      aNumRange = [-5, 5];
+      aDenRange = [2, 5];
+    } else {
+      aNumRange = [-2, 2];
+      aDenRange = [1, 2];
+    }
+
+    let a1_num = MathUtils.randomInt(aNumRange[0], aNumRange[1]);
+    if (a1_num === 0) a1_num = 1;
+    let a1_den = MathUtils.randomInt(aDenRange[0], aDenRange[1]);
+
+    const a1 = a1_num / a1_den;
+    const b1 = MathUtils.randomInt(-5, 5);
+    const P = {
+      x: MathUtils.randomInt(-3, 3) * a1_den,
+      y: MathUtils.randomInt(-5, 5),
+    };
+
     const a2 = mode === "parallel" ? a1 : -1 / a1;
     const b2 = P.y - a2 * P.x;
+
+    const eq1 = this.formatLineEquation(a1, b1);
     const eq2 = this.formatLineEquation(a2, b2);
+
     return this.createResponse({
-      question: `Prosta przez P ${mode === "parallel" ? "równoległa" : "prostopadła"} do k:`,
-      latex: `k: y=${a1}x+${b1}, P(2,3)`,
+      question: `Wyznacz równanie prostej przechodzącej przez punkt $$P$$ i ${mode === "parallel" ? "równoległej" : "prostopadłej"} do prostej $$k$$:`,
+      latex: `k: y=${eq1}, P=(${P.x}, ${P.y})`,
       image: null,
       variables: { a2, b2 },
       correctAnswer: `y=${eq2}`,
-      distractors: [`y=${a1}x`, `y=${-a1}x+3`, `y=x+1`],
+      distractors: [
+        `y = ${this.formatLineEquation(a1, b2)}`,
+        `y = ${this.formatLineEquation(-a2, b2)}`,
+        `y = ${this.formatLineEquation(1 / a2, b2)}`,
+      ],
       steps: [
-        `$$a_2=${this.fractionToLatex(a2)}$$`,
-        `$$b_2=${this.fractionToLatex(b2)}$$`,
+        `Współczynnik kierunkowy prostej $$k$$: $$a_1 = ${this.fractionToLatex(a1)}$$`,
+        mode === "parallel"
+          ? `Dla prostej równoległej: $$a_2 = a_1 = ${this.fractionToLatex(a2)}$$`
+          : `Dla prostej prostopadłej: $$a_2 = -\\frac{1}{a_1} = ${this.fractionToLatex(a2)}$$`,
+        `Podstawiamy punkt $$P$$: $$${P.y} = ${this.fractionToLatex(a2)} \\cdot (${P.x}) + b_2$$`,
+        `$$b_2 = ${this.fractionToLatex(b2)}$$`,
+        `$$y = ${eq2}$$`,
       ],
     });
   }
@@ -52,33 +120,68 @@ class LinesGenerator extends BaseGenerator {
   generateParameterMProblem() {
     const mode = MathUtils.randomElement(["parallel", "perpendicular"]);
     const m = MathUtils.randomInt(-3, 3);
-    const a1_coeff = MathUtils.randomElement([2, 3]);
+
+    let a1_coeff, a2_val;
+
+    if (this.difficulty === "easy") {
+      a1_coeff = 2; // 2m
+      a2_val = mode === "parallel" ? 2 * m : -1 / (2 * m);
+    } else {
+      a1_coeff = MathUtils.randomElement([2, 3, 4]);
+    }
+
+    // a1 = Coeff * m + Const
+    // a2 = Val
+    // Parallel: a1 = a2. Perp: a1*a2 = -1.
+
     const a1_const = MathUtils.randomInt(-2, 2);
-    const a1 = a1_coeff * m + a1_const;
-    const a2 = mode === "parallel" ? a1 : a1 !== 0 ? -1 / a1 : 1;
+
+    // Parallel: a2 = coeff*m + const
+    // Perp: a2 = -1 / (coeff*m + const)
+
+    let a2;
+    if (mode === "parallel") {
+      a2 = a1_coeff * m + a1_const;
+    } else {
+      const denominator = a1_coeff * m + a1_const;
+      if (denominator === 0) return this.generateParameterMProblem();
+      a2 = -1.0 / denominator;
+    }
+
+    const a2_latex = this.fractionToLatex(a2);
+
     return this.createResponse({
-      question: `Proste są ${mode}. Oblicz m.`,
-      latex: `l: y=(${a1_coeff}m ${a1_const >= 0 ? "+" : ""}${a1_const})x+1, k: y=${this.fractionToLatex(a2)}x-2`,
+      question: `Proste $$l$$ i $$k$$ są ${mode === "parallel" ? "równoległe" : "prostopadłe"}. Oblicz parametr $$m$$.`,
+      latex: `l: y=(${a1_coeff}m ${a1_const >= 0 ? "+" : ""}${a1_const})x+1, \\quad k: y=${a2_latex}x-2`,
       image: null,
       variables: { m },
       correctAnswer: `m=${m}`,
       distractors: [`m=${m + 1}`, `m=${-m}`, `m=0`],
       steps: [
+        `Współczynniki kierunkowe: $$a_1 = ${a1_coeff}m ${a1_const >= 0 ? "+" : ""}${a1_const}$$, $$a_2 = ${a2_latex}$$`,
         `Warunek: $${mode === "parallel" ? "a_1=a_2" : "a_1 a_2 = -1"}$$`,
+        `Rozwiązanie równania daje $$m=${m}$$`,
       ],
     });
   }
 
   generateIntersectionProblem() {
-    const intX = MathUtils.randomInt(-4, 4);
-    const intY = MathUtils.randomInt(-4, 4);
+    let range;
+    if (this.difficulty === "easy") range = [-2, 2];
+    else range = [-5, 5];
+
+    const intX = MathUtils.randomInt(range[0], range[1]);
+    const intY = MathUtils.randomInt(range[0], range[1]);
+
     const a1 = 1;
     const b1 = intY - a1 * intX;
+
     const a2 = -1;
     const b2 = intY - a2 * intX;
+
     return this.createResponse({
-      question: "Punkt przecięcia prostych:",
-      latex: `y=x${b1 >= 0 ? "+" : ""}${b1}, y=-x${b2 >= 0 ? "+" : ""}${b2}`,
+      question: "Punkt przecięcia prostych układu równań:",
+      latex: `\\begin{cases} y=x${b1 >= 0 ? "+" : ""}${b1} \\\\ y=-x${b2 >= 0 ? "+" : ""}${b2} \\end{cases}`,
       image: AnalyticSVGUtils.generateSVG({
         type: "lines_intersection",
         a1,
@@ -91,7 +194,9 @@ class LinesGenerator extends BaseGenerator {
       correctAnswer: `(${intX}, ${intY})`,
       distractors: [`(${intY}, ${intX})`, `(0,0)`, `(${intX}, 0)`],
       steps: [
-        `$$x${b1 >= 0 ? "+" : ""}${b1} = -x${b2 >= 0 ? "+" : ""}${b2} \\implies 2x=${b2 - b1} \\implies x=${intX}$$`,
+        `$$x${b1 >= 0 ? "+" : ""}${b1} = -x${b2 >= 0 ? "+" : ""}${b2}$$`,
+        `$$2x = ${b2 - b1} \\implies x = ${intX}$$`,
+        `$$y = ${intX} ${b1 >= 0 ? "+" : ""}${b1} = ${intY}$$`,
       ],
     });
   }
@@ -105,8 +210,15 @@ class LinesGenerator extends BaseGenerator {
       { ang: 135, tan: "-1", val: -1 },
       { ang: 150, tan: "-\\frac{\\sqrt{3}}{3}", val: -Math.sqrt(3) / 3 },
     ];
-    const sel = MathUtils.randomElement(angles);
+
+    let availableAngles = angles;
+    if (this.difficulty === "easy") {
+      availableAngles = angles.filter((x) => x.ang === 45 || x.ang === 135);
+    }
+
+    const sel = MathUtils.randomElement(availableAngles);
     const b = MathUtils.randomInt(-4, 4);
+
     const aStr = sel.tan;
     const bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
     const eq =
@@ -127,7 +239,10 @@ class LinesGenerator extends BaseGenerator {
         `${90 - sel.ang}^\\circ`,
         `${sel.ang > 90 ? sel.ang - 90 : sel.ang + 30}^\\circ`,
       ],
-      steps: [`$$a = \\tg\\alpha$$. Odp: $$\\alpha = ${sel.ang}^\\circ$$`],
+      steps: [
+        `Współczynnik kierunkowy $$a = \\tg\\alpha$$.`,
+        `$$a = ${sel.tan} \\implies \\alpha = ${sel.ang}^\\circ$$`,
+      ],
     });
   }
 
@@ -144,16 +259,24 @@ class LinesGenerator extends BaseGenerator {
       variables: { a, b, x, m_val: y },
       correctAnswer: `${y}`,
       distractors: [`${-y}`, `${x}`, `${a * x}`],
-      steps: [`$$m = ${a}\\cdot(${x}) ${b >= 0 ? "+" : ""}${b} = ${y}$$`],
+      steps: [
+        `Podstawiamy $$x=${x}$$ do wzoru:`,
+        `$$m = ${a}\\cdot(${x}) ${b >= 0 ? "+" : ""}${b} = ${y}$$`,
+      ],
     });
   }
 
   generateIntersectionWithAxes() {
     const b = MathUtils.randomInt(-6, 6);
     const root = MathUtils.randomInt(-6, 6);
+
     if (root === 0) return this.generateIntersectionWithAxes();
+
     const a = -b / root;
-    if (!Number.isInteger(a)) return this.generateIntersectionWithAxes();
+
+    if (this.difficulty !== "hard" && !Number.isInteger(a))
+      return this.generateIntersectionWithAxes();
+
     const axis = MathUtils.randomElement(["Ox", "Oy"]);
     const eq = this.formatLineEquation(a, b);
     return this.createResponse({
@@ -170,7 +293,7 @@ class LinesGenerator extends BaseGenerator {
       steps: [
         axis === "Oy"
           ? `$$x=0 \\implies y=${b}$$`
-          : `$$y=0 \\implies x=${root}$$`,
+          : `$$y=0 \\implies ax+b=0 \\implies x=${root}$$`,
       ],
     });
   }
@@ -206,7 +329,8 @@ class LinesGenerator extends BaseGenerator {
     const a_sym = -1;
     const b_sym = 2;
     return this.createResponse({
-      question: "Symetralna odcinka AB:",
+      question:
+        "Wyznacz równanie symetralnej odcinka AB, gdzie A(-2,0) i B(2,4).",
       latex: `A(-2,0), B(2,4)`,
       image: AnalyticSVGUtils.generateSVG({
         type: "bisector",
@@ -219,11 +343,14 @@ class LinesGenerator extends BaseGenerator {
       variables: { S },
       correctAnswer: `y=-x+2`,
       distractors: [`y=x+2`, `y=-x`, `y=x`],
-      steps: [`Środek S(0,2)`, `a_{AB}=1 \\implies a_{sym}=-1`],
+      steps: [
+        `Środek $$S(0,2)$$`,
+        `$$a_{AB}=1 \\implies a_{sym}=-1$$`,
+        `Podstawiamy S do $$y=-x+b$$`,
+      ],
     });
   }
 
-  // Helpery
   generateNiceLinePoints() {
     const x1 = MathUtils.randomInt(-5, 5),
       y1 = MathUtils.randomInt(-5, 5);

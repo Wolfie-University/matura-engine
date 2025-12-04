@@ -4,25 +4,51 @@ const AnalyticSVGUtils = require("./AnalyticSVGUtils");
 
 class ShapesCoordsGenerator extends BaseGenerator {
   generateCircleProblem() {
-    const S = { x: 2, y: -3 };
-    const r = 4;
+    let rangeS;
+    if (this.difficulty === "easy") rangeS = [-3, 3];
+    else rangeS = [-8, 8];
+
+    const S = {
+      x: MathUtils.randomInt(rangeS[0], rangeS[1]),
+      y: MathUtils.randomInt(rangeS[0], rangeS[1]),
+    };
+    const r = MathUtils.randomInt(2, 6);
+
+    const eq = `(x ${S.x > 0 ? "-" : "+"} ${Math.abs(S.x)})^2 + (y ${S.y > 0 ? "-" : "+"} ${Math.abs(S.y)})^2 = ${r * r}`;
+
     return this.createResponse({
-      question: "Środek i promień okręgu:",
-      latex: `(x-2)^2 + (y+3)^2 = 16`,
+      question: "Środek i promień okręgu o równaniu:",
+      latex: eq,
       image: AnalyticSVGUtils.generateSVG({ type: "circle", S, r }),
       variables: { S, r },
-      correctAnswer: `S=(2,-3), r=4`,
-      distractors: [`S=(-2,3), r=4`, `S=(2,-3), r=16`, `S=(2,3), r=2`],
-      steps: [`$$(x-a)^2+(y-b)^2=r^2$$`],
+      correctAnswer: `S=(${S.x},${S.y}), r=${r}`,
+      distractors: [
+        `S=(${-S.x},${-S.y}), r=${r}`,
+        `S=(${S.x},${S.y}), r=${r * r}`,
+        `S=(${S.y},${S.x}), r=${r}`,
+      ],
+      steps: [`$$(x-a)^2+(y-b)^2=r^2$$`, `$$a=${S.x}, b=${S.y}, r=${r}$$`],
     });
   }
 
   generateCircleTangentToAxis() {
+    let rangeS;
+    if (this.difficulty === "easy") {
+      rangeS = [-3, 3];
+    } else {
+      rangeS = [-8, 8];
+    }
+
     const axis = MathUtils.randomElement(["Ox", "Oy"]);
-    const S = { x: MathUtils.randomInt(-5, 5), y: MathUtils.randomInt(-5, 5) };
+    const S = {
+      x: MathUtils.randomInt(rangeS[0], rangeS[1]),
+      y: MathUtils.randomInt(rangeS[0], rangeS[1]),
+    };
     if (S.x === 0) S.x = 2;
     if (S.y === 0) S.y = -3;
+
     const r = axis === "Ox" ? Math.abs(S.y) : Math.abs(S.x);
+
     return this.createResponse({
       question: `Okrąg o środku $$S=(${S.x}, ${S.y})$$ jest styczny do osi $$${axis}$$. Promień:`,
       latex: ``,
@@ -41,10 +67,20 @@ class ShapesCoordsGenerator extends BaseGenerator {
   }
 
   generateRadiusFromEquation() {
-    const rSq = MathUtils.randomElement([4, 9, 16, 25, 2, 3, 5, 8]);
+    let rSqList;
+    if (this.difficulty === "easy") {
+      rSqList = [4, 9, 16, 25, 36, 49, 64, 81, 100];
+    } else if (this.difficulty === "hard") {
+      rSqList = [2, 3, 5, 6, 7, 8, 10, 12];
+    } else {
+      rSqList = [4, 9, 25, 2, 3, 5];
+    }
+
+    const rSq = MathUtils.randomElement(rSqList);
     const rStr = Number.isInteger(Math.sqrt(rSq))
       ? `${Math.sqrt(rSq)}`
       : `\\sqrt{${rSq}}`;
+
     return this.createResponse({
       question: `Promień okręgu $$(x-1)^2 + (y+2)^2 = ${rSq}$$ wynosi:`,
       latex: ``,
@@ -57,7 +93,17 @@ class ShapesCoordsGenerator extends BaseGenerator {
   }
 
   generateParallelogramVertex() {
-    const A = { x: MathUtils.randomInt(-5, 5), y: MathUtils.randomInt(-5, 5) };
+    let range;
+    if (this.difficulty === "easy") {
+      range = [0, 5];
+    } else {
+      range = [-6, 6];
+    }
+
+    const A = {
+      x: MathUtils.randomInt(range[0], range[1]),
+      y: MathUtils.randomInt(range[0], range[1]),
+    };
     const B = {
       x: A.x + MathUtils.randomInt(2, 6),
       y: A.y + MathUtils.randomInt(-2, 4),
@@ -67,6 +113,7 @@ class ShapesCoordsGenerator extends BaseGenerator {
       y: B.y + MathUtils.randomInt(3, 7),
     };
     const D = { x: A.x + C.x - B.x, y: A.y + C.y - B.y };
+
     return this.createResponse({
       question: `Wierzchołki równoległoboku ABCD: A(${A.x},${A.y}), B(${B.x},${B.y}), C(${C.x},${C.y}). Wierzchołek D:`,
       latex: ``,
@@ -92,28 +139,57 @@ class ShapesCoordsGenerator extends BaseGenerator {
   }
 
   generateTriangleAreaCoords() {
-    const y_base = MathUtils.randomInt(-4, 4);
-    const x1 = MathUtils.randomInt(-6, 0);
-    const x2 = x1 + MathUtils.randomInt(3, 8);
-    const x3 = MathUtils.randomInt(-5, 5);
-    const y3 = y_base + MathUtils.randomElement([-3, -4, -5, 3, 4, 5]);
-    const base = Math.abs(x2 - x1);
-    const h = Math.abs(y3 - y_base);
+    let range;
+    if (this.difficulty === "easy") range = [-3, 3];
+    else range = [-6, 6];
+
+    const isHorizontal = this.difficulty === "easy" || Math.random() > 0.5;
+
+    let x1, y1, x2, y2, x3, y3;
+    let base, h;
+
+    if (isHorizontal) {
+      const y_base = MathUtils.randomInt(range[0], range[1]);
+      x1 = MathUtils.randomInt(range[0], 0);
+      x2 = x1 + MathUtils.randomInt(3, 8);
+      x3 = MathUtils.randomInt(range[0], range[1]);
+      y3 = y_base + MathUtils.randomElement([-3, -4, 3, 4]);
+
+      y1 = y_base;
+      y2 = y_base;
+      base = Math.abs(x2 - x1);
+      h = Math.abs(y3 - y_base);
+    } else {
+      const x_base = MathUtils.randomInt(range[0], range[1]);
+      y1 = MathUtils.randomInt(range[0], 0);
+      y2 = y1 + MathUtils.randomInt(3, 8);
+      y3 = MathUtils.randomInt(range[0], range[1]);
+      x3 = x_base + MathUtils.randomElement([-3, -4, 3, 4]);
+
+      x1 = x_base;
+      x2 = x_base;
+      base = Math.abs(y2 - y1);
+      h = Math.abs(x3 - x_base);
+    }
+
     const area = 0.5 * base * h;
+
     return this.createResponse({
-      question: `Pole trójkąta o wierzchołkach A(${x1},${y_base}), B(${x2},${y_base}), C(${x3},${y3}):`,
+      question: `Pole trójkąta o wierzchołkach A(${x1},${y1}), B(${x2},${y2}), C(${x3},${y3}):`,
       latex: ``,
       image: AnalyticSVGUtils.generateSVG({
         type: "triangle_coords",
-        A: { x: x1, y: y_base },
-        B: { x: x2, y: y_base },
+        A: { x: x1, y: y1 },
+        B: { x: x2, y: y2 },
         C: { x: x3, y: y3 },
       }),
       variables: { area },
       correctAnswer: `${area}`,
       distractors: [`${area * 2}`, `${area + 2}`, `${base + h}`],
       steps: [
-        `Podstawa AB pozioma, długość ${base}. Wysokość h=${h}. Pole = ${area}.`,
+        isHorizontal
+          ? `Podstawa AB pozioma, długość ${base}. Wysokość h=${h}. Pole = ${area}.`
+          : `Podstawa AB pionowa, długość ${base}. Wysokość h=${h}. Pole = ${area}.`,
       ],
     });
   }

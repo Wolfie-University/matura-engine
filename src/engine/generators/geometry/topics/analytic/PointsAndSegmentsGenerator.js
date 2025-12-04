@@ -4,13 +4,31 @@ const AnalyticSVGUtils = require("./AnalyticSVGUtils");
 
 class PointsAndSegmentsGenerator extends BaseGenerator {
   generateMidpointProblem() {
-    const A = { x: MathUtils.randomInt(-6, 6), y: MathUtils.randomInt(-6, 6) };
-    const S = { x: MathUtils.randomInt(-4, 4), y: MathUtils.randomInt(-4, 4) };
-    const B = { x: 2 * S.x - A.x, y: 2 * S.y - A.y };
+    let range;
+    if (this.difficulty === "easy") {
+      range = [-4, 4];
+    } else if (this.difficulty === "hard") {
+      range = [-8, 8];
+    } else {
+      range = [-6, 6];
+    }
+
+    const A = {
+      x: MathUtils.randomInt(range[0], range[1]),
+      y: MathUtils.randomInt(range[0], range[1]),
+    };
+
+    const dx = MathUtils.randomInt(1, 5) * (this.difficulty === "easy" ? 2 : 1);
+    const dy = MathUtils.randomInt(1, 5) * (this.difficulty === "easy" ? 2 : 1);
+
+    const B = { x: A.x + dx, y: A.y + dy };
+    const S = { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 };
+
     const lengthSquared = Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2);
     const lengthStr = Number.isInteger(Math.sqrt(lengthSquared))
       ? `${Math.sqrt(lengthSquared)}`
       : `\\sqrt{${lengthSquared}}`;
+
     return this.createResponse({
       question:
         "Dane są punkty $$A$$ i $$B$$. Oblicz środek i długość odcinka.",
@@ -31,9 +49,22 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
   }
 
   generateMissingEndpoint() {
-    const A = { x: MathUtils.randomInt(-6, 6), y: MathUtils.randomInt(-6, 6) };
-    const S = { x: MathUtils.randomInt(-4, 4), y: MathUtils.randomInt(-4, 4) };
+    let range;
+    if (this.difficulty === "easy") range = [-4, 4];
+    else range = [-8, 8];
+
+    const A = {
+      x: MathUtils.randomInt(range[0], range[1]),
+      y: MathUtils.randomInt(range[0], range[1]),
+    };
+    const S = {
+      x: MathUtils.randomInt(range[0], range[1]),
+      y: MathUtils.randomInt(range[0], range[1]),
+    };
+
+    // B = 2S - A
     const B = { x: 2 * S.x - A.x, y: 2 * S.y - A.y };
+
     return this.createResponse({
       question: "Punkt S jest środkiem odcinka AB. Znając A i S oblicz B.",
       latex: `S=(${S.x}, ${S.y}), A=(${A.x}, ${A.y})`,
@@ -50,32 +81,59 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
   }
 
   generateDistanceUnknownCoord() {
+    // |AB| = d. A=(x1, y1), B=(x2, m).
     const x1 = 1,
       y1 = 2;
-    const triple = MathUtils.randomElement([
-      [3, 4, 5],
-      [6, 8, 10],
-      [5, 12, 13],
-    ]);
+    let triples;
+
+    if (this.difficulty === "easy") {
+      triples = [
+        [3, 4, 5],
+        [6, 8, 10],
+      ];
+    } else {
+      triples = [
+        [5, 12, 13],
+        [8, 15, 17],
+        [1, 1, Math.sqrt(2)],
+      ];
+    }
+
+    if (this.difficulty === "hard")
+      triples = [
+        [5, 12, 13],
+        [8, 15, 17],
+      ];
+
+    const triple = MathUtils.randomElement(triples);
     const dx = triple[0];
     const dy = triple[1];
     const d = triple[2];
+
     const x2 = x1 + dx;
     const m = y1 + dy;
+
+    const dStr = Number.isInteger(d) ? `${d}` : d.toFixed(2);
+
     return this.createResponse({
-      question: `Punkty $$A=(${x1}, ${y1})$$ i $$B=(${x2}, m)$$ są odległe o $$${d}$$. Jedną z możliwych wartości $$m$$ jest:`,
-      latex: `|AB|=${d}`,
+      question: `Punkty $$A=(${x1}, ${y1})$$ i $$B=(${x2}, m)$$ są odległe o $$${dStr}$$. Jedną z możliwych wartości $$m$$ jest:`,
+      latex: `|AB|=${dStr}`,
       image: null,
       variables: { m, d },
       correctAnswer: `${m}`,
       distractors: [`${m + 2}`, `${y1}`, `${x2}`],
-      steps: [`$$|AB| = \\sqrt{(x_2-x_1)^2 + (m-y_1)^2} = ${d}$$`],
+      steps: [`$$|AB| = \\sqrt{(x_2-x_1)^2 + (m-y_1)^2} = ${dStr}$$`],
     });
   }
 
   generatePointSymmetry() {
     const P = { x: MathUtils.randomInt(-6, 6), y: MathUtils.randomInt(-6, 6) };
-    const type = MathUtils.randomElement(["Ox", "Oy", "(0,0)"]);
+    let types;
+
+    if (this.difficulty === "easy") types = ["Ox", "Oy"];
+    else types = ["Ox", "Oy", "(0,0)"];
+
+    const type = MathUtils.randomElement(types);
     let resX, resY;
     if (type === "Ox") {
       resX = P.x;
@@ -87,6 +145,7 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
       resX = -P.x;
       resY = -P.y;
     }
+
     return this.createResponse({
       question: `Obraz punktu $$P(${P.x}, ${P.y})$$ w symetrii względem ${type}:`,
       latex: ``,
@@ -109,22 +168,41 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
   }
 
   generateCollinearPoints() {
-    const a_int = MathUtils.randomInt(-3, 3) || 1;
+    let aRange, aDen;
+    if (this.difficulty === "easy") {
+      aRange = [-2, 2];
+      aDen = 1;
+    } else {
+      aRange = [-5, 5];
+      aDen = MathUtils.randomElement([1, 2]);
+    }
+
+    const a_num = MathUtils.randomInt(aRange[0], aRange[1]) || 1;
+    const a_val = a_num / aDen;
     const b_int = MathUtils.randomInt(-5, 5);
-    const A2 = { x: 1, y: a_int * 1 + b_int };
-    const B2 = { x: 3, y: a_int * 3 + b_int };
+
+    // A=(1, ...), B=(3, ...)
+    // y = ax+b
+    // C=(m, ...)
+    const A2 = { x: 1 * aDen, y: a_num * 1 + b_int };
+    const B2 = { x: 3 * aDen, y: a_num * 3 + b_int };
+
     const m_sol = MathUtils.randomInt(-4, 4);
-    const C_val = a_int * m_sol + b_int;
+    const C_val = a_val * m_sol + b_int;
+
+    const C_val_str = Number.isInteger(C_val) ? `${C_val}` : C_val.toFixed(1);
+
     return this.createResponse({
-      question: `Punkty $$A=(${A2.x}, ${A2.y})$$, $$B=(${B2.x}, ${B2.y})$$ i $$C=(m, ${C_val})$$ są współliniowe. Wynika stąd, że:`,
+      question: `Punkty $$A=(${A2.x}, ${A2.y})$$, $$B=(${B2.x}, ${B2.y})$$ i $$C=(m, ${C_val_str})$$ są współliniowe. Wynika stąd, że:`,
       latex: ``,
       image: null,
       variables: { m_sol },
       correctAnswer: `m = ${m_sol}`,
       distractors: [`m = ${m_sol + 1}`, `m = ${-m_sol}`, `m = 0`],
       steps: [
-        `Wyznaczamy prostą AB: $$y = ${a_int}x ${b_int >= 0 ? "+" : ""}${b_int}$$`,
-        `Podstawiamy C: $$${C_val} = ${a_int}m + ${b_int} \\implies m=${m_sol}$$`,
+        `Wyznaczamy prostą AB.`,
+        `Podstawiamy C do równania prostej $$y = ax + b$$`,
+        `$$${C_val_str} = ${a_val}m + ${b_int} \\implies m=${m_sol}$$`,
       ],
     });
   }
