@@ -36,7 +36,7 @@ class IntervalsGenerator extends BaseGenerator {
     return this.createResponse({
       question:
         "Zbiór rozwiązań nierówności jest zaznaczony na osi liczbowej. Wybierz poprawny zbiór.",
-      latex: `|x - (${a})| ${sign} ${b}`
+      latex: `|x - (${a}| ${sign} ${b}`
         .replace("- (-", "+ ")
         .replace("- (", "- "),
       image: this.generateNumberLineSVG({
