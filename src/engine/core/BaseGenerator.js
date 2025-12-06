@@ -15,6 +15,8 @@ class BaseGenerator {
     correctAnswer,
     distractors,
     steps,
+    answerFormat,
+    questionType,
   }) {
     return {
       meta: {
@@ -34,6 +36,8 @@ class BaseGenerator {
       solution: {
         steps: steps, // array of strings explaining the solution
       },
+      answer_format: answerFormat || "format",
+      question_type: questionType || "closed",
     };
   }
 }
