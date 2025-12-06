@@ -24,10 +24,7 @@ class CirclesGenerator extends BaseGenerator {
         mode === "find_central"
           ? `Punkt $$O$$ jest środkiem okręgu. Kąt wpisany $$\\alpha$$ ma miarę $$${aStr}^\\circ$$. Miara kąta środkowego $$\\beta$$ opartego na tym samym łuku jest równa:`
           : `Punkt $$O$$ jest środkiem okręgu. Kąt środkowy $$\\beta$$ ma miarę $$${bStr}^\\circ$$. Miara kąta wpisanego $$\\alpha$$ opartego na tym samym łuku jest równa:`,
-      latex:
-        mode === "find_central"
-          ? `\\alpha = ${aStr}^\\circ`
-          : `\\beta = ${bStr}^\\circ`,
+      latex: null,
       image: PlanimetrySVGUtils.generateSVG({
         type: "circle_angles",
         alpha,
@@ -39,12 +36,12 @@ class CirclesGenerator extends BaseGenerator {
       distractors:
         mode === "find_central"
           ? [
-              `${aStr}^\\circ`,
+              `${aStr - 10}^\\circ`,
               `${(180 - alpha).toFixed(1).replace(".0", "")}^\\circ`,
               `${(90 + alpha).toFixed(1).replace(".0", "")}^\\circ`,
             ]
           : [
-              `${bStr}^\\circ`,
+              `${bStr - 10}^\\circ`,
               `${(beta * 2).toFixed(1).replace(".0", "")}^\\circ`,
               `${(180 - beta).toFixed(1).replace(".0", "")}^\\circ`,
             ],

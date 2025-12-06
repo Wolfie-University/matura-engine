@@ -153,8 +153,8 @@ class TrianglesGenerator extends BaseGenerator {
 
       return this.createResponse({
         question: `Pole trójkąta równobocznego o boku $$${a}$$ jest równe:`,
-        latex: `a=${a}`,
-        image: PlanimetrySVGUtils.generateSVG({ type: "equilateral", a }),
+        latex: null,
+        image: null,
         variables: { a },
         correctAnswer: `${pCoeff}\\sqrt{3}`,
         distractors: [`${pCoeff * 4}\\sqrt{3}`, `${pCoeff}`, `${a}\\sqrt{3}`],
@@ -271,12 +271,7 @@ class TrianglesGenerator extends BaseGenerator {
     return this.createResponse({
       question: `Przyprostokątne trójkąta prostokątnego mają długości $$${a}$$ i $$${b}$$. Promień okręgu opisanego wynosi:`,
       latex: ``,
-      image: PlanimetrySVGUtils.generateSVG({
-        type: "right_triangle_basic",
-        a,
-        b,
-        c,
-      }),
+      image: null,
       variables: { a, b, c, R },
       correctAnswer: `${R}`,
       distractors: [`${c}`, `${(a + b) / 2}`, `${(a + b - c) / 2}`],
