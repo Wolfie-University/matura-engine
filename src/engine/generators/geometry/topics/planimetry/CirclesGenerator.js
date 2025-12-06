@@ -54,6 +54,7 @@ class CirclesGenerator extends BaseGenerator {
           ? `$$\\beta = 2 \\cdot ${aStr}^\\circ = ${bStr}^\\circ$$`
           : `$$\\alpha = ${bStr}^\\circ : 2 = ${aStr}^\\circ$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -79,6 +80,7 @@ class CirclesGenerator extends BaseGenerator {
         correctAnswer: `${r * r}\\pi`,
         distractors: [`${2 * r}\\pi`, `${r}\\pi`, `${r * r}`],
         steps: [`$$P = \\pi r^2 = \\pi \\cdot ${r}^2 = ${r * r}\\pi$$`],
+        questionType: "closed",
       });
     } else if (mode === "circ_from_r") {
       return this.createResponse({
@@ -89,6 +91,7 @@ class CirclesGenerator extends BaseGenerator {
         correctAnswer: `${2 * r}\\pi`,
         distractors: [`${r * r}\\pi`, `${r}\\pi`, `${2 * r}`],
         steps: [`$$L = 2\\pi r = 2\\pi \\cdot ${r} = ${2 * r}\\pi$$`],
+        questionType: "closed",
       });
     } else {
       const area = r * r;
@@ -100,6 +103,7 @@ class CirclesGenerator extends BaseGenerator {
         correctAnswer: `${r}`,
         distractors: [`${area}`, `${area / 2}`, `${Math.sqrt(area) * 2}`],
         steps: [`$$P = \\pi r^2 \\implies r^2 = ${area} \\implies r = ${r}$$`],
+        questionType: "closed",
       });
     }
   }
@@ -147,6 +151,7 @@ class CirclesGenerator extends BaseGenerator {
       steps: [
         `$$P_w = \\frac{${alpha}}{360} \\cdot \\pi \\cdot ${niceR}^2 = ${niceSectorStr}\\pi$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -188,6 +193,7 @@ class CirclesGenerator extends BaseGenerator {
         `Wzór: $$L = \\frac{\\alpha}{360^\\circ} \\cdot 2\\pi r$$`,
         `$$L = \\frac{${alpha}}{360} \\cdot 2\\pi \\cdot ${niceR} = ${niceLenStr}\\pi$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -211,6 +217,7 @@ class CirclesGenerator extends BaseGenerator {
         `${180 - alpha}^\\circ`,
       ],
       steps: [`Kąt $$C = 90^\\circ$$. $$\\beta = 90 - ${alpha} = ${beta}$$`],
+      questionType: "closed",
     });
   }
 
@@ -248,6 +255,7 @@ class CirclesGenerator extends BaseGenerator {
       correctAnswer: mode === "find_tangent" ? `${x}` : `${d}`,
       distractors: [`${d - r}`, `${x + r}`, `${d + r}`],
       steps: [`$$r^2 + x^2 = d^2$$`],
+      questionType: "closed",
     });
   }
 }

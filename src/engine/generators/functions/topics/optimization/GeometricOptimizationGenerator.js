@@ -35,6 +35,8 @@ class GeometricOptimizationGenerator extends BaseGenerator {
         `Wierzchołek $$p = \\frac{-b}{2a} = ${x}$$.`,
         `$$y = ${y}$$.`,
       ],
+      questionType: "open",
+      answerFormat: "x=a m, y=b m",
     });
   }
 
@@ -65,6 +67,8 @@ class GeometricOptimizationGenerator extends BaseGenerator {
         `$$P(x) = 2x^2 + 4xh = -6x^2 + ${S}x$$.`,
         `Wierzchołek $$p = ${a}$$.`,
       ],
+      questionType: "open",
+      answerFormat: "x=a",
     });
   }
 
@@ -104,6 +108,8 @@ class GeometricOptimizationGenerator extends BaseGenerator {
         `$$P(h) = \\frac{${a} + b}{2}h = -0.5h^2 + ${(a + S) / 2}h$$.`,
         `Wierzchołek $$p = ${h_opt}$$.`,
       ],
+      questionType: "open",
+      answerFormat: "h=a dm",
     });
   }
 

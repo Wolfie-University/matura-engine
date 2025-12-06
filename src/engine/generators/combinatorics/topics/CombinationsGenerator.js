@@ -65,6 +65,8 @@ class CombinationsGenerator extends BaseGenerator {
           ? `$$${n1} \\cdot ${n2} \\cdot ${n3} \\cdot ${n4} = ${total}$$`
           : `$$${n1} \\cdot ${n2} \\cdot ${n3} = ${total}$$`,
       ],
+      questionType: "open",
+      answerType: "number",
     });
   }
 
@@ -100,6 +102,8 @@ class CombinationsGenerator extends BaseGenerator {
         `Wzór na liczbę kombinacji 2-elementowych ze zbioru n-elementowego: $$\\frac{n(n-1)}{2}$$`,
         `$$\\frac{${n}\\cdot${n - 1}}{2} = \\frac{${n * (n - 1)}}{2} = ${result}$$`,
       ],
+      questionType: "open",
+      answerType: "number",
     });
   }
 
@@ -142,7 +146,7 @@ class CombinationsGenerator extends BaseGenerator {
       distractors: [
         k === 2
           ? `${total * (total - 1)}`
-          : `${total * (total - 1) * (total - 2)}`,  
+          : `${total * (total - 1) * (total - 2)}`,
         `${total * k}`,
         `${res + total}`,
       ],
@@ -150,6 +154,8 @@ class CombinationsGenerator extends BaseGenerator {
         `Kolejność wyboru nie ma znaczenia, stosujemy symbol Newtona (kombinacje) $${total} \\choose ${k}$.`,
         `$$${stepsCalc}$$`,
       ],
+      questionType: "open",
+      answerType: "number",
     });
   }
 }

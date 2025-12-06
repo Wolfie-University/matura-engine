@@ -42,6 +42,7 @@ class AnglesGenerator extends BaseGenerator {
           ? `Kąty wierzchołkowe mają tę samą miarę. $$\\beta = \\alpha = ${alphaStr}^\\circ$$.`
           : `Suma kątów przyległych wynosi $$180^\\circ$$. $$\\beta = 180^\\circ - ${alphaStr}^\\circ = ${betaStr}^\\circ$$.`,
       ],
+      questionType: "closed",
     });
   }
 }

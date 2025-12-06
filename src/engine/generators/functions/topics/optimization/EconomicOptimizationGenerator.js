@@ -119,8 +119,8 @@ class EconomicOptimizationGenerator extends BaseGenerator {
       variables: { startPrice, startSales, stepSales, optimalX: x },
       correctAnswer:
         scenario.id === "hotel" || scenario.id === "electronics"
-          ? `${newPriceStr} ${scenario.unit}`
-          : `${xStr} ${scenario.unit}`,
+          ? `${newPriceStr}`
+          : `${xStr}`,
       distractors: [
         `${Number(xStr) + 5} ${scenario.unit}`,
         `${Number(newPriceStr) - 10} ${scenario.unit}`,
@@ -135,6 +135,8 @@ class EconomicOptimizationGenerator extends BaseGenerator {
           ? `Szukana cena: $$${startPrice} - ${xStr} = ${newPriceStr}$$ ${scenario.unit}.`
           : `Należy obniżyć cenę o $$${xStr}$$ ${scenario.unit}.`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -193,7 +195,7 @@ class EconomicOptimizationGenerator extends BaseGenerator {
         true,
       ),
       variables: { calculatedStartFruits, startTrees, lossPerTree, targetX },
-      correctAnswer: `${targetX} drzew`,
+      correctAnswer: `${targetX}`,
       distractors: [
         `${targetX + 5} drzew`,
         `${targetX * 2} drzew`,
@@ -208,6 +210,8 @@ class EconomicOptimizationGenerator extends BaseGenerator {
         `Wierzchołek leży pośrodku: $$p = \\frac{-${startTrees} + ${calculatedStartFruits / lossPerTree}}{2} = ${targetX}$$`,
         `Należy dosadzić $$${targetX}$$ drzew.`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 

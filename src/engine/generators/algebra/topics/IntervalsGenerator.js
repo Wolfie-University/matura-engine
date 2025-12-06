@@ -59,6 +59,7 @@ class IntervalsGenerator extends BaseGenerator {
         `Szukamy liczb, których odległość od $$${a}$$ jest ${isInside ? "mniejsza" : "większa"} ${isClosed ? "lub równa" : ""} $$${b}$$.`,
         `Odp: $$${interval}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -140,6 +141,7 @@ class IntervalsGenerator extends BaseGenerator {
             : `Przedziały zachodzą na siebie.`,
         `Odp: $$${result}$$`,
       ],
+      questionType: "closed",
     });
   }
 

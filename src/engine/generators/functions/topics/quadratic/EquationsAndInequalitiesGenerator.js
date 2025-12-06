@@ -48,7 +48,7 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
       correctAnswer: `x \\in ${res}`,
       distractors: [
         `x \\in ${res.includes("cup") ? `(${minX},${maxX})` : `R\\setminus(${minX},${maxX})`}`,
-        `x \\in R`,
+        `x \\in \\R`,
         `x \\in \\emptyset`,
       ],
       steps: [
@@ -56,6 +56,8 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
         `Parabola ${a > 0 ? "uśmiechnięta" : "smutna"}`,
         `Odp: ${res}`,
       ],
+      questionType: "open",
+      answerFormat: "x \\in (...)",
     });
   }
 
@@ -72,6 +74,7 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
       steps: [
         `Wierzchołek $$q=${q}$$. Dwa rozwiązania gdy prosta przecina ramiona.`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -109,6 +112,7 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
         `${prod}, ${sum}`, // swapped
       ],
       steps: [`Suma = $$-b/a = ${sum}$$`, `Iloczyn = $$c/a = ${prod}$$`],
+      questionType: "closed",
     });
   }
 
@@ -147,7 +151,7 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
     const formula = `f(x) = ${aStr}(x ${pSign} ${Math.abs(p)})^2 ${qSign}${q}`;
 
     return this.createResponse({
-      question: `Wierzchołkiem paraboli jest punkt $$W(${p},${q})$$, a jej wykres przechodzi przez punkt $$A(${x},${y})$$. Wzór tej funkcji w postaci kanonicznej to:`,
+      question: `Wierzchołkiem paraboli jest punkt $$W(${p},${q})$$, a jej wykres przechodzi przez punkt $$A(${x},${y})$$. Wyznacz wzór tej funkcji w postaci kanonicznej.`,
       latex: ``,
       image: null,
       variables: {},
@@ -158,6 +162,8 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
         `f(x) = (x ${pSign} ${Math.abs(p)})^2 ${qSign}${q}`, // a=1 (missing)
       ],
       steps: [`Postać kanoniczna. Podstawiamy W i A, wyliczamy a.`],
+      questionType: "open",
+      answerFormat: "f(x) = ...",
     });
   }
 
@@ -171,6 +177,8 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
       correctAnswer: `b=${b}, c=${c}`,
       distractors: [`b=${-b}, c=${c}`, `b=${c}, c=${b}`, `b=${b}, c=${-c}`],
       steps: [`$$p=-b/2a$$, $$q=ap^2+bp+c$$`],
+      questionType: "open",
+      answerFormat: "b=..., c=...",
     });
   }
 
@@ -192,6 +200,7 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
       correctAnswer: `${b}`,
       distractors: [`${c}`, `${-b}`, `${a}`],
       steps: [`Wymnażamy nawiasy.`],
+      questionType: "closed",
     });
   }
 

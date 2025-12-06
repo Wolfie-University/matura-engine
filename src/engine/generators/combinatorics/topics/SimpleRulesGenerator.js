@@ -42,6 +42,7 @@ class SimpleRulesGenerator extends BaseGenerator {
       correctAnswer: `${count}`,
       distractors: [`${count + 10}`, `${count / 2}`, `${Math.pow(10, digits)}`],
       steps: [`Stosujemy regułę mnożenia.`, desc, `Wynik: $$${count}$$`],
+      questionType: "closed",
     });
   }
 
@@ -88,6 +89,7 @@ class SimpleRulesGenerator extends BaseGenerator {
         digits > 3 ? `Kolejne: coraz mniej o 1.` : ``,
         `Wynik: $$${res}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -134,6 +136,7 @@ class SimpleRulesGenerator extends BaseGenerator {
         `Dostępne cyfry to: $$${setDigits.join(", ")}$$. Jest ich $$${k}$$.`,
         `$$${Array(n).fill(k).join(" \\cdot ")} = ${k}^{${n}} = ${res}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -173,6 +176,7 @@ class SimpleRulesGenerator extends BaseGenerator {
         `$$${examples.join(", ")}...$$`,
         `Łącznie jest ich: $$${count}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -209,6 +213,7 @@ class SimpleRulesGenerator extends BaseGenerator {
         `$$26^{${lettersCount}}$$ (litery) $$\\cdot$$ $$10^{${digitsCount}}$$ (cyfry)`,
         `Z reguły mnożenia: $$${latexRes}$$`,
       ],
+      questionType: "closed",
     });
   }
 }

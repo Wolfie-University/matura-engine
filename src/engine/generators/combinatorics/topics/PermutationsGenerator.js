@@ -27,6 +27,8 @@ class PermutationsGenerator extends BaseGenerator {
         `Liczba permutacji zbioru $$n$$-elementowego to $$n!$$.`,
         `$$${n}! = ${res}$$`,
       ],
+      questionType: "open",
+      answerType: "number",
     });
   }
 
@@ -64,6 +66,8 @@ class PermutationsGenerator extends BaseGenerator {
           ? `$$${k} \\cdot ${k - 1} \\cdot ${k - 2} = ${res}$$`
           : `$$${k} \\cdot ${k} \\cdot ${k} = ${res}$$`,
       ],
+      questionType: "open",
+      answerType: "number",
     });
   }
 
@@ -112,6 +116,8 @@ class PermutationsGenerator extends BaseGenerator {
           ? `$$(${n}-1)! \\cdot 2 = ${res / 2} \\cdot 2 = ${res}$$`
           : `$$(${n}-1)! = ${res}$$`,
       ],
+      questionType: "open",
+      answerType: "number",
     });
   }
 

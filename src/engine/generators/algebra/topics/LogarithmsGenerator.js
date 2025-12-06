@@ -39,6 +39,7 @@ class LogarithmsGenerator extends BaseGenerator {
         `$$\\log_a b - \\log_a c = \\log_a \\frac{b}{c}$$`,
         `$$\\log_{${base}} \\frac{${X}}{${Y}} = \\log_{${base}} ${X / Y} = ${result}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -101,6 +102,7 @@ class LogarithmsGenerator extends BaseGenerator {
         `$$\\log_{${base}} ${Math.pow(realX, k)} - \\log_{${base}} ${y} = \\log_{${base}} \\frac{${Math.pow(realX, k)}}{${y}} = \\log_{${base}} ${total}$$`,
         `$$${base}^x = ${total} \\implies x = ${p}$$`,
       ],
+      questionType: "closed",
     });
   }
 }

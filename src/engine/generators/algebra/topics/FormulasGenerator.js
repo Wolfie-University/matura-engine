@@ -43,6 +43,7 @@ class FormulasGenerator extends BaseGenerator {
         `$$(\\sqrt{${a}})^2 ${sign} 2\\cdot\\sqrt{${a}}\\cdot${b} + ${b}^2$$`,
         `$$${a} ${sign} ${2 * b}\\sqrt{${a}} + ${b * b} = ${answer}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -84,6 +85,7 @@ class FormulasGenerator extends BaseGenerator {
         `$$a = ${ax}, \\quad b = ${b}$$`,
         `$$-4 \\cdot (${ax}) \\cdot ${b} = ${resultVal}${variable}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -147,6 +149,7 @@ class FormulasGenerator extends BaseGenerator {
         `Skracamy z mianownikiem $$(${den})$$.`,
         `Wynik: $$${res}$$`,
       ],
+      questionType: "closed",
     });
   }
 }

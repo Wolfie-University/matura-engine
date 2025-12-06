@@ -66,6 +66,7 @@ class PiecewiseFunctionGenerator extends BaseGenerator {
         `$$f(${val2}) = ${f2_tex.replace(/x/g, `(${val2})`)} = ${res2}$$`,
         `Suma: $$${res1} + ${res2} = ${total}$$`,
       ],
+      questionType: "closed",
     });
   }
 }

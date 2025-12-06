@@ -40,6 +40,7 @@ class NumbersGenerator extends BaseGenerator {
       steps: [
         `$$(100\\% - ${p}\\%)x = ${finalPriceStr} \\implies ${(100 - p) / 100}x = ${finalPriceStr} \\implies x = ${originalPrice}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -84,6 +85,7 @@ class NumbersGenerator extends BaseGenerator {
         `$$x = ${1 + s.p / 100}y$$`,
         `$$y = x : ${1 + s.p / 100} = ${s.b_frac}x$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -126,6 +128,7 @@ class NumbersGenerator extends BaseGenerator {
         `Błąd bezwzględny: $$|x-y|=${deltaStr}$$`,
         `Błąd względny: $$\\frac{${deltaStr}}{${x}} = ${errorPercent}\\%$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -172,6 +175,8 @@ class NumbersGenerator extends BaseGenerator {
       steps: [
         `Rozkładamy na czynniki i stosujemy algorytm Euklidesa lub własność $$NWD \\cdot NWW = a \\cdot b$$.`,
       ],
+      questionType: "open",
+      answerFormat: `${symbol}=(a, b)`,
     });
   }
 
