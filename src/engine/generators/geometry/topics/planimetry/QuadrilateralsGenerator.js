@@ -36,6 +36,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
       steps: [
         `$$P = \\frac{d_1 d_2}{2} = \\frac{${d1_final} \\cdot ${d2_final}}{2} = ${areaStr}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -47,7 +48,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
     const obtuse = 180 - 2 * angle;
 
     return this.createResponse({
-      question: `Kąt między dłuższą przekątną a bokiem rombu ma miarę $$${angle}^\\circ$$. Kąt rozwarty tego rombu ma miarę:`,
+      question: `Kąt między dłuższą przekątną a bokiem rombu ma miarę $$${angle}^\\circ$$. Oblicz kąt rozwarty tego rombu.`,
       latex: ``,
       image: PlanimetrySVGUtils.generateSVG({
         type: "rhombus_angles",
@@ -64,6 +65,8 @@ class QuadrilateralsGenerator extends BaseGenerator {
         `Przekątna jest dwusieczną kąta ostrego. Cały kąt ostry: $$2 \\cdot ${angle}^\\circ = ${2 * angle}^\\circ$$.`,
         `Suma kątów przy ramieniu to $$180^\\circ$$. Kąt rozwarty: $$180^\\circ - ${2 * angle}^\\circ = ${obtuse}^\\circ$$`,
       ],
+      questionType: "open",
+      answerFormat: "α=angle^\\circ",
     });
   }
 
@@ -88,6 +91,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
         `${2 * alpha}^\\circ`,
       ],
       steps: [`$$180^\\circ - ${alpha}^\\circ = ${beta}^\\circ$$`],
+      questionType: "closed",
     });
   }
 
@@ -107,7 +111,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
     const areaStr = Number.isInteger(area) ? `${area}` : area.toFixed(1);
 
     return this.createResponse({
-      question: `Trapez ma podstawy $$${a}$$ i $$${b_final}$$ oraz wysokość $$${h}$$. Pole wynosi:`,
+      question: `Trapez ma podstawy $$${a}$$ i $$${b_final}$$ oraz wysokość $$${h}$$. Jego pole wynosi:`,
       latex: ``,
       image: PlanimetrySVGUtils.generateSVG({
         type: "trapezoid",
@@ -123,6 +127,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
         `${a * b_final * h}`,
       ],
       steps: [`$$P = \\frac{${a}+${b_final}}{2} \\cdot ${h} = ${areaStr}$$`],
+      questionType: "closed",
     });
   }
 
@@ -132,20 +137,22 @@ class QuadrilateralsGenerator extends BaseGenerator {
     else alpha = MathUtils.randomInt(40, 80);
 
     return this.createResponse({
-      question: `Kąt ostry równoległoboku to $$${alpha}^\\circ$$. Rozwarty to:`,
+      question: `Kąt ostry równoległoboku to $$${alpha}^\\circ$$. Oblicz kąt rozwarty.`,
       latex: ``,
       image: PlanimetrySVGUtils.generateSVG({
         type: "parallelogram",
         angle: alpha,
       }),
       variables: { alpha },
-      correctAnswer: `${180 - alpha}^\\circ`,
+      correctAnswer: `α=${180 - alpha}^\\circ`,
       distractors: [
-        `${90 - alpha > 0 ? 90 - alpha : alpha + 20}^\\circ`,
-        `${alpha}^\\circ`,
-        `${2 * alpha}^\\circ`,
+        `α=${90 - alpha > 0 ? 90 - alpha : alpha + 20}^\\circ`,
+        `α=${alpha}^\\circ`,
+        `α=${2 * alpha}^\\circ`,
       ],
       steps: [`$$180^\\circ - ${alpha}^\\circ$$`],
+      questionType: "open",
+      answerFormat: "α=angle^\\circ",
     });
   }
 
@@ -156,7 +163,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
 
     const gamma = 180 - alpha;
     return this.createResponse({
-      question: `Czworokąt wpisany w okrąg. Kąt $$A$$ ma $$${alpha}^\\circ$$. Kąt $$C$$ ma miarę:`,
+      question: `Mamy czworokąt wpisany w okrąg. Kąt $$A$$ ma $$${alpha}^\\circ$$. Kąt $$C$$ ma miarę:`,
       latex: ``,
       image: PlanimetrySVGUtils.generateSVG({ type: "cyclic_quad", alpha }),
       variables: { alpha, gamma },
@@ -167,6 +174,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
         `${360 - alpha}^\\circ`,
       ],
       steps: [`$$180^\\circ - ${alpha}^\\circ = ${gamma}^\\circ$$`],
+      questionType: "closed",
     });
   }
 
@@ -207,6 +215,7 @@ class QuadrilateralsGenerator extends BaseGenerator {
         `${a_final + c_final}`,
       ],
       steps: [`$$a+c = b+d \\implies d = ${a_final}+${c_final}-${b} = ${d}$$`],
+      questionType: "closed",
     });
   }
 }

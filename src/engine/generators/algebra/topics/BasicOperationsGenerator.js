@@ -33,7 +33,7 @@ class BasicOperationsGenerator extends BaseGenerator {
     const baseSq = base * base;
 
     return this.createResponse({
-      question: "Liczba $$x$$ jest równa wartości wyrażenia. Wyznacz $$x$$.",
+      question: "Liczba $$x$$ jest równa wartości wyrażenia. Ile wynosi $$x$$?",
       latex: `x = \\frac{${base}^{${n}} \\cdot ${baseSq}^{${k}}}{${base}^{${m}}}`,
       image: null,
       variables: { base, n, k, m, finalExp },
@@ -49,6 +49,7 @@ class BasicOperationsGenerator extends BaseGenerator {
         `Licznik: $$${base}^{${n}} \\cdot ${base}^{${2 * k}} = ${base}^{${n + 2 * k}}$$`,
         `Całość: $$x = ${base}^{${n + 2 * k} - ${m}} = ${base}^{${finalExp}}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -86,8 +87,8 @@ class BasicOperationsGenerator extends BaseGenerator {
     const correctAnswer = `${resultFactor}\\sqrt{${root}}`;
 
     return this.createResponse({
-      question: "Liczba jest równa:",
-      latex: latex,
+      question: `Liczba $$${latex}$$ jest równa:`,
+      latex: null,
       image: null,
       variables: { root, f1, f2, largeVal, smallVal },
       correctAnswer: correctAnswer,
@@ -101,6 +102,8 @@ class BasicOperationsGenerator extends BaseGenerator {
         `$$\\sqrt{${smallVal}} = ${f2}\\sqrt{${root}}$$`,
         `Wynik: $$${correctAnswer}$$`,
       ],
+      anserFormat: null,
+      questionType: "closed",
     });
   }
 
@@ -146,8 +149,9 @@ class BasicOperationsGenerator extends BaseGenerator {
     const formatNum = (num) => (Number.isInteger(num) ? `${num}` : `${num}`);
 
     return this.createResponse({
-      question: "Wartość wyrażenia jest równa:",
-      latex: `\\frac{${formatNum(a_base)} \\cdot 10^{${k}}}{${formatNum(b_base)} \\cdot 10^{${m}}}`,
+      question:
+        "Wartość wyrażenia $$\\frac{${formatNum(a_base)} \\cdot 10^{${k}}}{${formatNum(b_base)} \\cdot 10^{${m}}}$$jest równa:",
+      latex: null,
       image: null,
       variables: { a_base, b_base, k, m },
       correctAnswer: `${formatNum(finalMantissa)} \\cdot 10^{${finalExponent}}`,
@@ -161,6 +165,7 @@ class BasicOperationsGenerator extends BaseGenerator {
         `$$10^{${k}}:10^{${m}}=10^{${k - m}}$$`,
         `Normalizacja: $$${formatNum(finalMantissa)} \\cdot 10^{${finalExponent}}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -211,6 +216,7 @@ class BasicOperationsGenerator extends BaseGenerator {
         `Mnożenie potęg: dodajemy wykładniki $$\\frac{${m}}{${n}} + \\frac{1}{2}$$`,
         `Sprowadzamy do wspólnego mianownika i skracamy: $$${a}^{\\frac{${finalNum}}{${finalDen}}}$$`,
       ],
+      questionType: "closed",
     });
   }
 }

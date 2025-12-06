@@ -38,6 +38,8 @@ class VertexAndRootsGenerator extends BaseGenerator {
         `$$p = \\frac{-b}{2a} = \\frac{${-b}}{${2 * a}} = ${p}$$`,
         `$$q = f(p) = ${q}$$`,
       ],
+      questionType: "open",
+      answerFormat: "W(x, y)",
     });
   }
 
@@ -68,7 +70,7 @@ class VertexAndRootsGenerator extends BaseGenerator {
     const q = a * p * p + b * p + c;
 
     return this.createResponse({
-      question: "Wyznacz miejsca zerowe funkcji:",
+      question: "Podaj miejsca zerowe funkcji:",
       latex: `f(x) = ${MathUtils.formatPolynomial(a, b, c)}`,
       image: SVGUtils.generateSVG({
         a,
@@ -81,7 +83,7 @@ class VertexAndRootsGenerator extends BaseGenerator {
         highlight: "roots",
       }),
       variables: { a, b, c, x1, x2 },
-      correctAnswer: `x_1 = ${roots[0]}, x_2 = ${roots[1]}`,
+      correctAnswer: `${roots[0]}, ${roots[1]}`,
       distractors: [
         `x_1 = ${-roots[0]}, x_2 = ${-roots[1]}`,
         `x_1 = ${roots[0]}, x_2 = ${-roots[1]}`,
@@ -91,6 +93,8 @@ class VertexAndRootsGenerator extends BaseGenerator {
         `$$\\Delta = b^2 - 4ac = ${b * b - 4 * a * c}$$`,
         `$$x_1 = ${roots[0]}, x_2 = ${roots[1]}$$`,
       ],
+      questionType: "open",
+      answerFormat: "x_1, x_2",
     });
   }
 
@@ -108,7 +112,7 @@ class VertexAndRootsGenerator extends BaseGenerator {
     const ans = `${aStr}${core} ${q > 0 ? `+ ${q}` : q < 0 ? `- ${Math.abs(q)}` : ""}`;
 
     return this.createResponse({
-      question: "Jaka jest postać kanoniczna funkcji określonej wzorem:",
+      question: "Wyznacz postać kanoniczną funkcji określonej wzorem:",
       latex: `f(x) = ${MathUtils.formatPolynomial(a, b, c)}`,
       variables: { a, b, c },
       correctAnswer: `f(x) = ${ans}`,
@@ -118,6 +122,8 @@ class VertexAndRootsGenerator extends BaseGenerator {
         `f(x) = (x-${p})^2+${q}`, // forgotten a
       ],
       steps: [`$$p=${p}, q=${q}$$`, `$$f(x)=a(x-p)^2+q$$`],
+      questionType: "open",
+      answerFormat: "f(x) = ...",
     });
   }
 
@@ -131,6 +137,7 @@ class VertexAndRootsGenerator extends BaseGenerator {
       correctAnswer: `x = ${p}`,
       distractors: [`x = ${-p}`, `y = ${p}`, `x = ${b}`],
       steps: [`Oś symetrii przechodzi przez wierzchołek.`, `$$x = p = ${p}$$`],
+      questionType: "closed",
     });
   }
 

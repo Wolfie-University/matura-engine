@@ -29,8 +29,8 @@ class LinearFunctionGenerator extends BaseGenerator {
     const formula = this.formatLinear(a, b);
 
     return this.createResponse({
-      question: `Miejscem zerowym funkcji liniowej określonej wzorem $$f(x) = ${formula}$$ jest liczba:`,
-      latex: ``,
+      question: `Wyznacz miejsce zerowe funkcji liniowej określonej wzorem $$f(x) = ${formula}$$`,
+      latex: null,
       image: null,
       variables: { a, b, root },
       correctAnswer: `${root}`,
@@ -41,6 +41,8 @@ class LinearFunctionGenerator extends BaseGenerator {
         `$$${this.fractionToLatex(a)}x = ${this.fractionToLatex(-b)}$$`,
         `$$x = ${this.fractionToLatex(-b)} : (${this.fractionToLatex(a)}) = ${root}$$`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -79,6 +81,7 @@ class LinearFunctionGenerator extends BaseGenerator {
         `Współczynnik $$a$$ decyduje o monotoniczności. Funkcja jest ${a > 0 ? "rosnąca" : "malejąca"}, więc $$a ${aSign} 0$$.`,
         `Współczynnik $$b$$ to punkt przecięcia z osią $$Oy$$ ($$0, b$$). Punkt ten leży ${b > 0 ? "nad osią" : "pod osią"} $$Ox$$, więc $$b ${bSign} 0$$.`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -119,7 +122,7 @@ class LinearFunctionGenerator extends BaseGenerator {
     }
 
     return this.createResponse({
-      question: `Funkcja liniowa $$f(x) = (${bracket})x + 5$$ jest ${type} dla:`,
+      question: `Dla jakiego parametru $$m$$ funkcja liniowa $$f(x) = (${bracket})x + 5$$ jest ${type}?`,
       latex: ``,
       image: null,
       variables: { coeffM, validConst, type, boundary },
@@ -136,6 +139,8 @@ class LinearFunctionGenerator extends BaseGenerator {
         `Dzielimy przez $$${coeffM}$$ ${coeffM < 0 ? "(pamiętając o zmianie znaku!)" : ""}:`,
         `$$m ${finalSign} ${boundary}$$`,
       ],
+      questionType: "open",
+      answerFormat: "m=x",
     });
   }
 
@@ -161,6 +166,7 @@ class LinearFunctionGenerator extends BaseGenerator {
         `Współczynnik kierunkowy $$a = ${a}$$ (${monotonicity}).`,
         `Wyraz wolny $$b = ${b}$$ (punkt $$(0, ${b})$$).`,
       ],
+      questionType: "closed",
     });
   }
 

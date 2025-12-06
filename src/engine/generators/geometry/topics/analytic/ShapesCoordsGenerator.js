@@ -17,9 +17,9 @@ class ShapesCoordsGenerator extends BaseGenerator {
     const eq = `(x ${S.x > 0 ? "-" : "+"} ${Math.abs(S.x)})^2 + (y ${S.y > 0 ? "-" : "+"} ${Math.abs(S.y)})^2 = ${r * r}`;
 
     return this.createResponse({
-      question: "Środek i promień okręgu o równaniu:",
+      question: "Podaj kolejno: środek i promień okręgu o równaniu:",
       latex: eq,
-      image: AnalyticSVGUtils.generateSVG({ type: "circle", S, r }),
+      image: null,
       variables: { S, r },
       correctAnswer: `S=(${S.x},${S.y}), r=${r}`,
       distractors: [
@@ -28,6 +28,8 @@ class ShapesCoordsGenerator extends BaseGenerator {
         `S=(${S.y},${S.x}), r=${r}`,
       ],
       steps: [`$$(x-a)^2+(y-b)^2=r^2$$`, `$$a=${S.x}, b=${S.y}, r=${r}$$`],
+      questionType: "open",
+      answerFormat: "S=(x, y), r=d",
     });
   }
 
@@ -50,9 +52,9 @@ class ShapesCoordsGenerator extends BaseGenerator {
     const r = axis === "Ox" ? Math.abs(S.y) : Math.abs(S.x);
 
     return this.createResponse({
-      question: `Okrąg o środku $$S=(${S.x}, ${S.y})$$ jest styczny do osi $$${axis}$$. Promień:`,
-      latex: ``,
-      image: AnalyticSVGUtils.generateSVG({ type: "circle", S, r }),
+      question: `Okrąg o środku $$S=(${S.x}, ${S.y})$$ jest styczny do osi $$${axis}$$. Jego promień wynosi:`,
+      latex: null,
+      image: null,
       variables: { S, axis, r },
       correctAnswer: `${r}`,
       distractors: [
@@ -63,6 +65,7 @@ class ShapesCoordsGenerator extends BaseGenerator {
       steps: [
         `Odległość środka od osi $$${axis}$$ jest równa promieniowi. $$r = |${axis === "Ox" ? S.y : S.x}| = ${r}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -89,6 +92,7 @@ class ShapesCoordsGenerator extends BaseGenerator {
       correctAnswer: rStr,
       distractors: [`${rSq}`, `${rSq / 2}`, `${rSq * 2}`],
       steps: [`$$r^2 = ${rSq} \\implies r = ${rStr}$$`],
+      questionType: "closed",
     });
   }
 
@@ -115,15 +119,9 @@ class ShapesCoordsGenerator extends BaseGenerator {
     const D = { x: A.x + C.x - B.x, y: A.y + C.y - B.y };
 
     return this.createResponse({
-      question: `Wierzchołki równoległoboku ABCD: A(${A.x},${A.y}), B(${B.x},${B.y}), C(${C.x},${C.y}). Wierzchołek D:`,
-      latex: ``,
-      image: AnalyticSVGUtils.generateSVG({
-        type: "parallelogram_points",
-        A,
-        B,
-        C,
-        D,
-      }),
+      question: `Wierzchołki równoległoboku ABCD: $$A(${A.x},${A.y})$$, $$B(${B.x},${B.y}), C(${C.x},${C.y})$$. Oblicz współrzędne wierzchołka $$D$$.`,
+      latex: null,
+      image: null,
       variables: { D },
       correctAnswer: `(${D.x}, ${D.y})`,
       distractors: [
@@ -135,6 +133,8 @@ class ShapesCoordsGenerator extends BaseGenerator {
         `$$x_D = x_A + x_C - x_B = ${D.x}$$`,
         `$$y_D = y_A + y_C - y_B = ${D.y}$$`,
       ],
+      questionType: "open",
+      answerFormat: "(x, y)",
     });
   }
 
@@ -175,14 +175,9 @@ class ShapesCoordsGenerator extends BaseGenerator {
     const area = 0.5 * base * h;
 
     return this.createResponse({
-      question: `Pole trójkąta o wierzchołkach A(${x1},${y1}), B(${x2},${y2}), C(${x3},${y3}):`,
-      latex: ``,
-      image: AnalyticSVGUtils.generateSVG({
-        type: "triangle_coords",
-        A: { x: x1, y: y1 },
-        B: { x: x2, y: y2 },
-        C: { x: x3, y: y3 },
-      }),
+      question: `Oblicz pole trójkąta o wierzchołkach $$A(${x1},${y1})$$, $$B(${x2},${y2})$$, $$C(${x3},${y3})$$.`,
+      latex: null,
+      image: null,
       variables: { area },
       correctAnswer: `${area}`,
       distractors: [`${area * 2}`, `${area + 2}`, `${base + h}`],

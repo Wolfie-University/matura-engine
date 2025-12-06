@@ -42,7 +42,7 @@ class TransformationsQuadraticGenerator extends BaseGenerator {
     const dist3 = MathUtils.formatPolynomial(A, B, wrongC);
 
     return this.createResponse({
-      question: `Wykres funkcji $$f(x)=${formulaBase}$$ przesunięto o wektor $$v=[${p}, ${q}]$$. Nowym wzorem funkcji jest:`,
+      question: `Wykres funkcji $$f(x)=${formulaBase}$$ przesunięto o wektor $$v=[${p}, ${q}]$$. Jaki jest nowy wzór funkcji?`,
       latex: `v=[${p}, ${q}]`,
       image: null,
       variables: { a, p, q },
@@ -60,6 +60,8 @@ class TransformationsQuadraticGenerator extends BaseGenerator {
         `$$g(x) = ${A}x^2 ${B >= 0 ? "+" : ""}${B}x + ${a * p * p} ${q >= 0 ? "+" : ""}${q}$$`,
         `$$g(x) = ${formulaNew}$$`,
       ],
+      questionType: "open",
+      answerFormat: "g(x) = Ax^2 + Bx + C",
     });
   }
 
@@ -142,6 +144,7 @@ class TransformationsQuadraticGenerator extends BaseGenerator {
         `Szukamy wartości ${isGr ? "większych" : "mniejszych"} od zera (część wykresu ${isGr ? "nad osią" : "pod osią"}).`,
         `Odp: $$x \\in ${res}$$`,
       ],
+      questionType: "closed",
     });
   }
 }

@@ -31,8 +31,8 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question:
-        "Dane są punkty $$A$$ i $$B$$. Oblicz środek i długość odcinka.",
-      latex: `A=(${A.x}, ${A.y}), B=(${B.x}, ${B.y})`,
+        "Dane są punkty $$A=(${A.x}, ${A.y})$$ i $$B=(${B.x}, ${B.y})$$. Oblicz środek i długość odcinka.",
+      latex: null,
       image: AnalyticSVGUtils.generateSVG({ type: "segment", A, B, S }),
       variables: { A, B, S },
       correctAnswer: `S=(${S.x}, ${S.y}), |AB|=${lengthStr}`,
@@ -45,6 +45,8 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
         `$$S=(\\frac{${A.x}+${B.x}}{2}, \\frac{${A.y}+${B.y}}{2})=(${S.x}, ${S.y})$$`,
         `$$|AB|=\\sqrt{(${B.x}-${A.x})^2+(${B.y}-${A.y})^2}=${lengthStr}$$`,
       ],
+      questionType: "open",
+      answerFormat: "S=(x, y), |AB|=d",
     });
   }
 
@@ -66,9 +68,10 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
     const B = { x: 2 * S.x - A.x, y: 2 * S.y - A.y };
 
     return this.createResponse({
-      question: "Punkt S jest środkiem odcinka AB. Znając A i S oblicz B.",
-      latex: `S=(${S.x}, ${S.y}), A=(${A.x}, ${A.y})`,
-      image: AnalyticSVGUtils.generateSVG({ type: "segment", A, B, S }),
+      question:
+        "Punkt $$S=(${S.x}$$ jest środkiem odcinka AB. Wiedząc, że $$A=(${A.x}, ${A.y})$$ oblicz B.",
+      latex: null,
+      image: null,
       variables: { A, B, S },
       correctAnswer: `B=(${B.x}, ${B.y})`,
       distractors: [
@@ -77,6 +80,8 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
         `B=(${A.x}, ${A.y})`,
       ],
       steps: [`$$x_B = 2x_S - x_A = ${B.x}$$`, `$$y_B = 2y_S - y_A = ${B.y}$$`],
+      questionType: "open",
+      answerFormat: "B=(x, y)",
     });
   }
 
@@ -123,6 +128,7 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
       correctAnswer: `${m}`,
       distractors: [`${m + 2}`, `${y1}`, `${x2}`],
       steps: [`$$|AB| = \\sqrt{(x_2-x_1)^2 + (m-y_1)^2} = ${dStr}$$`],
+      questionType: "closed",
     });
   }
 
@@ -147,7 +153,7 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
     }
 
     return this.createResponse({
-      question: `Obraz punktu $$P(${P.x}, ${P.y})$$ w symetrii względem ${type}:`,
+      question: `Oblicz obraz punktu $$P(${P.x}, ${P.y})$$ w symetrii względem osi ${type}.`,
       latex: ``,
       image: null,
       variables: { P, type },
@@ -164,6 +170,8 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
             ? `Symetria OY: (-x, y)`
             : `Symetria (0,0): (-x, -y)`,
       ],
+      questionType: "open",
+      answerFormat: "(x, y)",
     });
   }
 
@@ -204,6 +212,7 @@ class PointsAndSegmentsGenerator extends BaseGenerator {
         `Podstawiamy C do równania prostej $$y = ax + b$$`,
         `$$${C_val_str} = ${a_val}m + ${b_int} \\implies m=${m_sol}$$`,
       ],
+      questionType: "closed",
     });
   }
 }

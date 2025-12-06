@@ -82,6 +82,7 @@ class TransformationsGenerator extends BaseGenerator {
             : `Symetria (0,0): $$g(x) = -f(-x)$$`,
         `$$g(x) = ${g_latex}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -150,7 +151,7 @@ class TransformationsGenerator extends BaseGenerator {
     }
 
     return this.createResponse({
-      question: `Wykres funkcji $$g$$ powstał przez przesunięcie wykresu funkcji $$${baseFuncLatex}$$ o wektor $$v=[${p}, ${q}]$$. Wzór funkcji $$g$$ to:`,
+      question: `Wykres funkcji $$g$$ powstał przez przesunięcie wykresu funkcji $$${baseFuncLatex}$$ o wektor $$v=[${p}, ${q}]$$. Wyznacz wzór funkcji $$g$$.`,
       latex: `v=[${p}, ${q}]`,
       image: null,
       variables: { p, q, type },
@@ -167,6 +168,8 @@ class TransformationsGenerator extends BaseGenerator {
 `,
         `$$g(x) = ${shiftedFuncLatex}$$`,
       ],
+      questionType: "open",
+      answerFormat: "g(x) = ...",
     });
   }
 }

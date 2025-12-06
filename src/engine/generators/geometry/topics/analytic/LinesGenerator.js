@@ -38,7 +38,7 @@ class LinesGenerator extends BaseGenerator {
     const eq = this.formatLineEquation(a, b);
 
     return this.createResponse({
-      question: "Równanie prostej przechodzącej przez punkty:",
+      question: "Podaj równanie prostej przechodzącej przez punkty:",
       latex: `A=(${A.x}, ${A.y}), B=(${B.x}, ${B.y})`,
       image: AnalyticSVGUtils.generateSVG({ type: "line", A, B }),
       variables: { A, B, a, b },
@@ -95,15 +95,15 @@ class LinesGenerator extends BaseGenerator {
     const eq2 = this.formatLineEquation(a2, b2);
 
     return this.createResponse({
-      question: `Wyznacz równanie prostej przechodzącej przez punkt $$P$$ i ${mode === "parallel" ? "równoległej" : "prostopadłej"} do prostej $$k$$:`,
+      question: `Wyznacz równanie prostej l przechodzącej przez punkt $$P$$ i ${mode === "parallel" ? "równoległej" : "prostopadłej"} do prostej $$k$$:`,
       latex: `k: y=${eq1}, P=(${P.x}, ${P.y})`,
       image: null,
       variables: { a2, b2 },
-      correctAnswer: `y=${eq2}`,
+      correctAnswer: `l: y=${eq2}`,
       distractors: [
-        `y = ${this.formatLineEquation(a1, b2)}`,
-        `y = ${this.formatLineEquation(-a2, b2)}`,
-        `y = ${this.formatLineEquation(1 / a2, b2)}`,
+        `l: y = ${this.formatLineEquation(a1, b2)}`,
+        `l: y = ${this.formatLineEquation(-a2, b2)}`,
+        `l: y = ${this.formatLineEquation(1 / a2, b2)}`,
       ],
       steps: [
         `Współczynnik kierunkowy prostej $$k$$: $$a_1 = ${this.fractionToLatex(a1)}$$`,
@@ -114,6 +114,8 @@ class LinesGenerator extends BaseGenerator {
         `$$b_2 = ${this.fractionToLatex(b2)}$$`,
         `$$y = ${eq2}$$`,
       ],
+      questionType: "open",
+      answerFormat: "l: y=...",
     });
   }
 
@@ -162,6 +164,8 @@ class LinesGenerator extends BaseGenerator {
         `Warunek: $${mode === "parallel" ? "a_1=a_2" : "a_1 a_2 = -1"}$$`,
         `Rozwiązanie równania daje $$m=${m}$$`,
       ],
+      questionType: "open",
+      answerFormat: "m=...",
     });
   }
 
@@ -192,6 +196,8 @@ class LinesGenerator extends BaseGenerator {
         `$$2x = ${b2 - b1} \\implies x = ${intX}$$`,
         `$$y = ${intX} ${b1 >= 0 ? "+" : ""}${b1} = ${intY}$$`,
       ],
+      questionType: "open",
+      answerFormat: "(x, y)",
     });
   }
 
@@ -237,6 +243,7 @@ class LinesGenerator extends BaseGenerator {
         `Współczynnik kierunkowy $$a = \\tg\\alpha$$.`,
         `$$a = ${sel.tan} \\implies \\alpha = ${sel.ang}^\\circ$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -248,7 +255,7 @@ class LinesGenerator extends BaseGenerator {
     const eq = this.formatLineEquation(a, b);
     return this.createResponse({
       question: `Punkt $$P=(${x}, m)$$ należy do wykresu funkcji liniowej $$y=${eq}$$. Liczba $$m$$ jest równa:`,
-      latex: `y=${eq}`,
+      latex: null,
       image: null,
       variables: { a, b, x, m_val: y },
       correctAnswer: `${y}`,
@@ -257,6 +264,7 @@ class LinesGenerator extends BaseGenerator {
         `Podstawiamy $$x=${x}$$ do wzoru:`,
         `$$m = ${a}\\cdot(${x}) ${b >= 0 ? "+" : ""}${b} = ${y}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -289,6 +297,8 @@ class LinesGenerator extends BaseGenerator {
           ? `$$x=0 \\implies y=${b}$$`
           : `$$y=0 \\implies ax+b=0 \\implies x=${root}$$`,
       ],
+      questionType: "open",
+      answerFormat: "(x, y)",
     });
   }
 
@@ -313,6 +323,7 @@ class LinesGenerator extends BaseGenerator {
         (sign < 0 ? "-" : "") + `\\frac{${den}}{${num}}`,
       ],
       steps: [`$$a_1 \\cdot a_2 = -1$$`],
+      questionType: "closed",
     });
   }
 
@@ -326,14 +337,7 @@ class LinesGenerator extends BaseGenerator {
       question:
         "Wyznacz równanie symetralnej odcinka AB, gdzie A(-2,0) i B(2,4).",
       latex: `A(-2,0), B(2,4)`,
-      image: AnalyticSVGUtils.generateSVG({
-        type: "bisector",
-        A,
-        B,
-        S,
-        a_sym,
-        b_sym,
-      }),
+      image: null,
       variables: { S },
       correctAnswer: `y=-x+2`,
       distractors: [`y=x+2`, `y=-x`, `y=x`],
@@ -342,6 +346,8 @@ class LinesGenerator extends BaseGenerator {
         `$$a_{AB}=1 \\implies a_{sym}=-1$$`,
         `Podstawiamy S do $$y=-x+b$$`,
       ],
+      questionType: "open",
+      answerFormat: "y=...",
     });
   }
 

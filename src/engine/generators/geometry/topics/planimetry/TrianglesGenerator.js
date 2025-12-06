@@ -18,7 +18,7 @@ class TrianglesGenerator extends BaseGenerator {
 
         if (!Number.isInteger(Math.sqrt(cSq))) {
           return this.createResponse({
-            question: `W trójkącie prostokątnym przyprostokątne mają długości $$${a}$$ i $$${b}$$. Przeciwprostokątna ma długość:`,
+            question: `W trójkącie prostokątnym przyprostokątne mają długości $$${a}$$ i $$${b}$$. Oblicz długość przeciwprostokątnej.`,
             latex: ``,
             image: PlanimetrySVGUtils.generateSVG({
               type: "right_triangle_basic",
@@ -33,6 +33,8 @@ class TrianglesGenerator extends BaseGenerator {
             steps: [
               `$$c^2 = ${a}^2 + ${b}^2 = ${cSq} \\implies c = \\sqrt{${cSq}}$$`,
             ],
+            questionType: "open",
+            answerFormat: "number",
           });
         }
       }
@@ -79,6 +81,7 @@ class TrianglesGenerator extends BaseGenerator {
           ? `$$c^2 = ${a}^2 + ${b}^2 = ${a * a} + ${b * b} = ${c * c} \\implies c = ${c}$$`
           : `$$b^2 = c^2 - a^2 = ${c}^2 - ${a}^2 = ${c * c} - ${a * a} = ${b * b} \\implies b = ${b}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -116,6 +119,7 @@ class TrianglesGenerator extends BaseGenerator {
         `Suma kątów w trójkącie wynosi $$180^\\circ$$.`,
         `$$180^\\circ - (${a}^\\circ + ${b}^\\circ) = 180^\\circ - ${a + b}^\\circ = ${c}^\\circ$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -132,13 +136,15 @@ class TrianglesGenerator extends BaseGenerator {
       const hCoeff = a % 2 === 0 ? `${a / 2}` : `\\frac{${a}}{2}`;
 
       return this.createResponse({
-        question: `Wysokość trójkąta równobocznego o boku $$${a}$$ jest równa:`,
-        latex: `a=${a}`,
+        question: `Oblicz wysokość trójkąta równobocznego o boku $$${a}$$.`,
+        latex: null,
         image: PlanimetrySVGUtils.generateSVG({ type: "equilateral", a }),
         variables: { a },
         correctAnswer: `${hCoeff}\\sqrt{3}`,
         distractors: [`${a}\\sqrt{3}`, `${a / 2}`, `${a * a}\\sqrt{3}`],
         steps: [`$$h = \\frac{a\\sqrt{3}}{2} = ${hCoeff}\\sqrt{3}$$`],
+        questionType: "open",
+        answerFormat: "number",
       });
     } else {
       // P = a^2 * sqrt(3) / 4
@@ -153,6 +159,7 @@ class TrianglesGenerator extends BaseGenerator {
         correctAnswer: `${pCoeff}\\sqrt{3}`,
         distractors: [`${pCoeff * 4}\\sqrt{3}`, `${pCoeff}`, `${a}\\sqrt{3}`],
         steps: [`$$P = \\frac{a^2\\sqrt{3}}{4} = ${pCoeff}\\sqrt{3}$$`],
+        questionType: "closed",
       });
     }
   }
@@ -172,13 +179,15 @@ class TrianglesGenerator extends BaseGenerator {
 
     const P2 = P1 * k * k;
     return this.createResponse({
-      question: `Trójkąt $$T_1$$ jest podobny do $$T_2$$ w skali $$k=${k}$$. Pole $$T_1$$ wynosi $$${P1}$$. Pole $$T_2$$ wynosi:`,
-      latex: ``,
+      question: `Trójkąt $$T_1$$ jest podobny do $$T_2$$ w skali $$k=${k}$$. Pole $$T_1$$ wynosi $$${P1}$$. Oblicz pole trójkąta $$T_2$$.`,
+      latex: null,
       image: null,
       variables: { P1, k },
       correctAnswer: `${P2}`,
       distractors: [`${P1 * k}`, `${P1 + k}`, `${P1 * k * 2}`],
       steps: [`$$P_2 = P_1 \\cdot k^2 = ${P1} \\cdot ${k * k} = ${P2}$$`],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -210,13 +219,14 @@ class TrianglesGenerator extends BaseGenerator {
     }
 
     return this.createResponse({
-      question: `Boki trójkąta to odpowiednio: $$${a}, ${b}$$ oraz kąt między nimi to $$${angle}^\\circ$$. Pole trójkąta wynosi:`,
+      question: `Boki trójkąta to odpowiednio: $$${a}, ${b}$$ oraz kąt między nimi to $$${angle}^\\circ$$. Pole tego trójkąta wynosi:`,
       latex: ``,
       image: null,
       variables: { a, b },
       correctAnswer: `${areaStr}`,
       distractors: [`${a * b}`, `${a + b}`, `${coeff}`],
       steps: [`$$P = \\frac{1}{2}ab \\sin\\alpha$$`],
+      questionType: "closed",
     });
   }
 
@@ -235,12 +245,7 @@ class TrianglesGenerator extends BaseGenerator {
     return this.createResponse({
       question: `Przyprostokątne trójkąta prostokątnego mają długości $$${a}$$ i $$${b}$$. Promień okręgu wpisanego wynosi:`,
       latex: ``,
-      image: PlanimetrySVGUtils.generateSVG({
-        type: "right_triangle_basic",
-        a,
-        b,
-        c,
-      }),
+      image: null,
       variables: { a, b, c, r },
       correctAnswer: `${r}`,
       distractors: [`${r * 2}`, `${c / 2}`, `${(a + b) / 2}`],
@@ -248,6 +253,7 @@ class TrianglesGenerator extends BaseGenerator {
         `$$c = ${c}$$`,
         `$$r = \\frac{a+b-c}{2} = \\frac{${a}+${b}-${c}}{2} = ${r}$$`,
       ],
+      questionType: "closed",
     });
   }
 

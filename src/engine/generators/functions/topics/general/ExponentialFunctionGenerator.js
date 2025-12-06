@@ -52,7 +52,7 @@ class ExponentialFunctionGenerator extends BaseGenerator {
     }
 
     return this.createResponse({
-      question: `Funkcja wykładnicza określona wzorem $$f(x) = a^x$$ przyjmuje dla argumentu $$${scenario.x}$$ wartość $$${scenario.y}$$. Podstawa $$a$$ tej funkcji jest równa:`,
+      question: `Funkcja wykładnicza określona wzorem $$f(x) = a^x$$ przyjmuje dla argumentu $$${scenario.x}$$ wartość $$${scenario.y}$$. Ile wynosi podstawa $$a$$ tej funkcji?`,
       latex: `f(${scenario.x}) = ${scenario.y}`,
       image: null,
       variables: { scenario },
@@ -66,6 +66,8 @@ class ExponentialFunctionGenerator extends BaseGenerator {
           : `Szukamy liczby, która podniesiona do potęgi $$${scenario.x}$$ da $$${scenario.y}$$.`,
         `$$a = ${correctA}$$`,
       ],
+      questionType: "open",
+      answerType: "number",
     });
   }
 }

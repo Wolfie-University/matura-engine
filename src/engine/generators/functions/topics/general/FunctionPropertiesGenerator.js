@@ -63,6 +63,7 @@ class FunctionPropertiesGenerator extends BaseGenerator {
         stepsCalc,
         `$$m = ${m}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -118,6 +119,7 @@ class FunctionPropertiesGenerator extends BaseGenerator {
         `Największa wartość: $$y_{max} = ${maxY}$$`,
         `Funkcja jest ciągła (połączone odcinki), więc zbiór wartości to $$${range}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -155,7 +157,7 @@ class FunctionPropertiesGenerator extends BaseGenerator {
 
     return this.createResponse({
       question:
-        "Dziedziną funkcji $$f$$ określonej wzorem $$f(x) = \\frac{2x+1}{${denominatorLatex}}$$ jest zbiór liczb rzeczywistych z wyłączeniem liczb:",
+        "Dziedziną funkcji $$f$$ określonej wzorem $$f(x) = \\frac{2x+1}{${denominatorLatex}}$$ jest zbiór liczb rzeczywistych z wyłączeniem jakich liczb?",
       latex: null,
       image: null,
       variables: { x1, x2 },
@@ -170,6 +172,8 @@ class FunctionPropertiesGenerator extends BaseGenerator {
         `Miejsca zerowe mianownika: $$${x1}, ${x2}$$`,
         `Te liczby musimy wyrzucić ze zbioru liczb rzeczywistych.`,
       ],
+      questionType: "open",
+      answerFormat: "{x_1, x_2}",
     });
   }
 
@@ -205,6 +209,7 @@ class FunctionPropertiesGenerator extends BaseGenerator {
         `Podstawiamy $$x = ${a}$$ do wzoru funkcji.`,
         `$$f(${a}) = ${result}$$`,
       ],
+      questionType: "closed",
     });
   }
 

@@ -42,6 +42,8 @@ class PropertiesGenerator extends BaseGenerator {
         `Współrzędna $$q=${q}$$ wierzchołka.`,
         `Zbiór wartości: $$${range}$$`,
       ],
+      questionType: "open",
+      answerFormat: "interval",
     });
   }
 
@@ -95,6 +97,7 @@ class PropertiesGenerator extends BaseGenerator {
         `Współrzędna $$p$$ wierzchołka $$p = \\frac{-b}{2a} = ${p}$$.`,
         `Ramiona ${a > 0 ? "góra" : "dół"}.`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -125,7 +128,7 @@ class PropertiesGenerator extends BaseGenerator {
     const f_end = a * end * end + b * end + c;
     const f_p = q;
 
-    const type = MathUtils.randomElement(["najmniejszą", "największą"]);
+    const type = MathUtils.randomElement(["najmniejsza", "największa"]);
     const values = [f_start, f_end];
     if (start <= p && p <= end) values.push(f_p);
 
@@ -133,7 +136,7 @@ class PropertiesGenerator extends BaseGenerator {
       type === "najmniejszą" ? Math.min(...values) : Math.max(...values);
 
     return this.createResponse({
-      question: `Największą i najmniejszą wartość funkcji w przedziale $$\\langle ${start}, ${end} \\rangle$$ są odpowiednio liczby... Wskaż ${type}.`,
+      question: `Największą i najmniejszą wartość funkcji w przedziale $$\\langle ${start}, ${end} \\rangle$$ są odpowiednio liczby... Jaka jest ${type} z nich?`,
       latex: `f(x) = ${MathUtils.formatPolynomial(a, b, c)}`,
       image: null,
       variables: { ans },
@@ -147,6 +150,8 @@ class PropertiesGenerator extends BaseGenerator {
             : ``) +
           `.`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
