@@ -170,7 +170,7 @@ class EquationsAndInequalitiesGenerator extends BaseGenerator {
   generateCoeffsFromVertexProblem() {
     const { a, b, c, p, q } = this.generateCoefficients();
     return this.createResponse({
-      question: `Wierzchołek W(${p},${q}) paraboli $$y=${a}x^2+bx+c$$. Oblicz b, c.`,
+      question: `Wierzchołek $$W(${p},${q})$$ paraboli $$y=${a}x^2+bx+c$$. Oblicz b, c.`,
       latex: ``,
       image: null,
       variables: {},

@@ -52,7 +52,7 @@ class ChartsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question:
-        "Diagram przedstawia wyniki sprawdzianu z matematyki w pewnej klasie. Oś pozioma to oceny, a pionowa to liczba uczniów. Średnia ocen w tej klasie jest równa:",
+        "Diagram przedstawia wyniki sprawdzianu z matematyki w pewnej klasie. Oś pozioma to oceny, a pionowa to liczba uczniów. Ile wynosi średnia ocen w tej klasie?",
       latex: ``,
       image: this.generateSVG({ type: "bar_chart", data }),
       variables: { data, totalSum, totalCount },
@@ -67,6 +67,8 @@ class ChartsGenerator extends BaseGenerator {
         `Liczba uczniów: $$${totalCount}$$`,
         `Średnia: $$\\frac{${totalSum}}{${totalCount}} = ${meanStr}$$`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -123,7 +125,7 @@ class ChartsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question:
-        "Tabela przedstawia rozkład pewnych danych (np. oceny lub liczba błędów). Średnia arytmetyczna tych danych jest równa:",
+        "Tabela przedstawia rozkład pewnych danych. Średnia arytmetyczna tych danych jest równa:",
       latex: tableLatex,
       image: null,
       variables: { counts, mean },
@@ -138,6 +140,7 @@ class ChartsGenerator extends BaseGenerator {
         `Suma liczebności: $$${totalCount}$$`,
         `Średnia: $$${meanStr}$$`,
       ],
+      questionType: "closed",
     });
   }
 

@@ -150,7 +150,7 @@ class BasicOperationsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question:
-        "Wartość wyrażenia $$\\frac{${formatNum(a_base)} \\cdot 10^{${k}}}{${formatNum(b_base)} \\cdot 10^{${m}}}$$jest równa:",
+        "Wartość wyrażenia $$\\frac{${formatNum(a_base)} \\cdot 10^{${k}}}{${formatNum(b_base)} \\cdot 10^{${m}}}$$ jest równa:",
       latex: null,
       image: null,
       variables: { a_base, b_base, k, m },

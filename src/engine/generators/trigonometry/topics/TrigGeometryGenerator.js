@@ -42,6 +42,7 @@ class TrigGeometryGenerator extends BaseGenerator {
         `\\frac{${a}}{${c + 1}}`,
       ],
       steps: [`Definicja $$${func}$$: Odpowiedni stosunek boków.`],
+      questionType: "closed",
     });
   }
 
@@ -84,13 +85,15 @@ class TrigGeometryGenerator extends BaseGenerator {
     }
 
     return this.createResponse({
-      question: `Dany jest trójkąt o bokach $$${a}$$ i $$${b}$$ oraz kącie między nimi $$${angle}^\\circ$$. Pole tego trójkąta wynosi:`,
+      question: `Dany jest trójkąt o bokach $$${a}$$ i $$${b}$$ oraz kącie między nimi $$${angle}^\\circ$$. Oblicz pole tego trójkąta.`,
       latex: ``,
       image: TrigSVGUtils.generateSVG({ type: "triangle_sas", a, b, angle }),
       variables: { a, b, angle },
       correctAnswer: areaStr,
       distractors: [`${a * b}`, `${coeff}`, `${coeff}\\sqrt{2}`],
       steps: [`$$P = \\frac{1}{2}ab \\sin\\alpha$$`],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -123,6 +126,7 @@ class TrigGeometryGenerator extends BaseGenerator {
       correctAnswer: areaStr,
       distractors: [`${a * b}`, `${a * b * 2}`, `${a + b}`],
       steps: [`$$P = ab \\sin\\alpha$$`],
+      questionType: "closed",
     });
   }
 
@@ -130,7 +134,7 @@ class TrigGeometryGenerator extends BaseGenerator {
     let angles;
     if (this.difficulty === "easy") angles = [30];
     else if (this.difficulty === "hard") angles = [45, 60];
-    else angles = [150];
+    else angles = [45];
 
     const a = MathUtils.randomInt(4, 10);
     const angle = MathUtils.randomElement(angles);
@@ -138,7 +142,7 @@ class TrigGeometryGenerator extends BaseGenerator {
     let areaStr;
     const aSq = a * a;
 
-    if (angle === 30 || angle === 150) {
+    if (angle === 30) {
       areaStr = Number.isInteger(aSq / 2) ? `${aSq / 2}` : (aSq / 2).toFixed(1);
     } else if (angle === 45) {
       areaStr = `${aSq / 2}\\sqrt{2}`;
@@ -154,6 +158,7 @@ class TrigGeometryGenerator extends BaseGenerator {
       correctAnswer: areaStr,
       distractors: [`${a * a}`, `${a * 4}`, `${(a * a) / 4}`],
       steps: [`$$P = a^2 \\sin\\alpha$$`],
+      questionType: "closed",
     });
   }
 
@@ -174,7 +179,7 @@ class TrigGeometryGenerator extends BaseGenerator {
     }
 
     return this.createResponse({
-      question: `Podstawa trójkąta równoramiennego ma długość $$${a}$$, a kąt przy podstawie ma miarę $$${angle}^\\circ$$. Ramię tego trójkąta ma długość:`,
+      question: `Podstawa trójkąta równoramiennego ma długość $$${a}$$, a kąt przy podstawie ma miarę $$${angle}^\\circ$$. Jaką długość ma ramię tego trójkąta?`,
       latex: ``,
       image: TrigSVGUtils.generateSVG({ type: "isosceles", a, angle }),
       variables: { a, angle },
@@ -183,6 +188,8 @@ class TrigGeometryGenerator extends BaseGenerator {
       steps: [
         `$$\\cos ${angle}^\\circ = \\frac{a/2}{b} \\implies b = \\frac{${a / 2}}{\\cos ${angle}^\\circ}$$`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -199,8 +206,8 @@ class TrigGeometryGenerator extends BaseGenerator {
     else hStr = `${c / 2}\\sqrt{3}`;
 
     return this.createResponse({
-      question: `Ramię trapezu równoramiennego ma długość $$${c}$$, a kąt ostry tego trapezu ma miarę $$${angle}^\\circ$$. Wysokość trapezu jest równa:`,
-      latex: ``,
+      question: `Ramię trapezu równoramiennego ma długość $$${c}$$, a kąt ostry tego trapezu ma miarę $$${angle}^\\circ$$. Oblicz wysokość tego trapezu.`,
+      latex: null,
       image: TrigSVGUtils.generateSVG({ type: "trapezoid_h", c, angle }),
       variables: { c, angle },
       correctAnswer: hStr,

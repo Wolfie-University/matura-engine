@@ -28,7 +28,7 @@ class FormulasGenerator extends BaseGenerator {
     const answer = `${constantPart} ${sign} ${rootPart}\\sqrt{${a}}`;
 
     return this.createResponse({
-      question: "Liczba $$(\\sqrt{${a}} ${sign} ${b})^2$$ jest równa:",
+      question: `Liczba $$(\\sqrt{${a}} ${sign} ${b})^2$$ jest równa:`,
       latex: null,
       image: null,
       variables: { a, b, sign },

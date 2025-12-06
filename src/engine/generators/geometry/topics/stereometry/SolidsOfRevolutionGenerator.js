@@ -24,8 +24,8 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
     return this.createResponse({
       question:
         mode === "find_l"
-          ? `Wysokość stożka $$h=${h}$$, promień $$r=${r}$$. Tworząca $$l$$ ma długość:`
-          : `Tworząca stożka $$l=${l}$$, promień $$r=${r}$$. Wysokość $$h$$ wynosi:`,
+          ? `Wysokość stożka wynosi $$h=${h}$$, promień $$r=${r}$$. Tworząca $$l$$ ma długość:`
+          : `Tworząca stożka wynosi $$l=${l}$$, promień $$r=${r}$$. Wysokość $$h$$ wynosi:`,
       latex: mode === "find_l" ? `h=${h}, r=${r}` : `l=${l}, r=${r}`,
       image: StereometrySVGUtils.generateSVG({ type: "cone", r, h }),
       variables: { r, h, l },
@@ -39,6 +39,7 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
         `Z twierdzenia Pitagorasa: $$r^2 + h^2 = l^2$$`,
         `Podstawiamy dane i obliczamy brakujący bok.`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -53,9 +54,9 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
     const V = r * r * h;
 
     return this.createResponse({
-      question: `Przekrój osiowy walca jest kwadratem o boku $$${h}$$. Objętość walca wynosi:`,
-      latex: `H=2r=${h}`,
-      image: StereometrySVGUtils.generateSVG({ type: "cylinder", r, h }),
+      question: `Przekrój osiowy walca jest kwadratem o boku $$${h}$$. Oblicz objętość tego walca.`,
+      latex: null,
+      image: null,
       variables: { r, h, V },
       correctAnswer: `${V}\\pi`,
       distractors: [`${V}`, `${2 * r * h}\\pi`, `${h * h}\\pi`],
@@ -63,6 +64,8 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
         `$$2r = ${h} \\implies r = ${r}$$`,
         `$$V = \\pi r^2 H = \\pi \\cdot ${r}^2 \\cdot ${h} = ${V}\\pi$$`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -88,7 +91,7 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
     const h = isBaseDiameter ? height : base;
 
     return this.createResponse({
-      question: `Przekrój osiowy walca jest prostokątem o wymiarach $$${2 * r} \\times ${h}$$ (średnica $$\\times$$ wysokość). Długość przekątnej tego przekroju jest równa:`,
+      question: `Przekrój osiowy walca jest prostokątem o wymiarach $$${2 * r} \\times ${h}$$ (średnica $$\\times$$ wysokość). Oblicz długość przekątnej tego przekroju.`,
       latex: `2r=${2 * r}, h=${h}`,
       image: StereometrySVGUtils.generateSVG({
         type: "cylinder_section",
@@ -107,6 +110,8 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
         `Z twierdzenia Pitagorasa dla przekątnej $$d$$: $$d = \\sqrt{a^2 + b^2}$$`,
         `$$d = \\sqrt{${2 * r}^2 + ${h}^2} = \\sqrt{${(2 * r) ** 2} + ${h * h}} = \\sqrt{${diag * diag}} = ${diag}$$`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -145,6 +150,7 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
         steps: [
           `$$V = \\frac{4}{3}\\pi r^3 = \\frac{4}{3}\\pi \\cdot ${Math.pow(r, 3)} = ${V_str}\\pi$$`,
         ],
+        questionType: "closed",
       });
     } else {
       const P = 4 * r * r;
@@ -156,6 +162,7 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
         correctAnswer: `${P}\\pi`,
         distractors: [`${r * r}\\pi`, `${2 * r * r}\\pi`, `${P / 4}\\pi`],
         steps: [`$$P = 4\\pi r^2 = 4\\pi \\cdot ${r * r} = ${P}\\pi$$`],
+        questionType: "closed",
       });
     }
   }

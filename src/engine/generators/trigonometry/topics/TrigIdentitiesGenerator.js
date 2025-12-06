@@ -26,6 +26,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
         `Wzór redukcyjny: $$${type}(${cStr}^\\circ) = ${type === "sin" ? "\\cos" : "\\sin"}(90^\\circ - ${cStr}^\\circ) = ${type === "sin" ? "\\cos" : "\\sin"}(${aStr}^\\circ)$$`,
         `$$${type}^2 ${aStr}^\\circ + ${type === "sin" ? "\\cos" : "\\sin"}^2 ${aStr}^\\circ = 1$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -49,7 +50,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
 
     if (qType === "cos_sq") {
       return this.createResponse({
-        question: `Kąt $$\\alpha$$ jest ostry i $$\\sin\\alpha = ${sinVal}$$. Wtedy $$\\cos^2\\alpha$$ równa się:`,
+        question: `Kąt $$\\alpha$$ jest ostry i $$\\sin\\alpha = ${sinVal}$$. Ile wynosi wartość wyrażenia $$\\cos^2\\alpha$$?`,
         latex: ``,
         image: null,
         variables: { leg1, hyp },
@@ -62,6 +63,8 @@ class TrigIdentitiesGenerator extends BaseGenerator {
         steps: [
           `$$1 - (\\frac{${leg1}}{${hyp}})^2 = \\frac{${hyp * hyp} - ${leg1 * leg1}}{${hyp * hyp}} = \\frac{${leg2 * leg2}}{${hyp * hyp}}$$`,
         ],
+        questionType: "open",
+        answerFormat: "number",
       });
     } else {
       return this.createResponse({
@@ -75,6 +78,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
           `$$\\sin^2\\alpha = \\frac{${leg1 * leg1}}{${hyp * hyp}}$$`,
           `$$3 - \\frac{${2 * leg1 * leg1}}{${hyp * hyp}} = \\dots$$`,
         ],
+        questionType: "closed",
       });
     }
   }
@@ -95,6 +99,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
       steps: [
         `$$\\tg\\alpha = \\frac{\\sin\\alpha}{\\cos\\alpha} = \\frac{${k}\\cos\\alpha}{\\cos\\alpha} = ${k}$$`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -109,6 +114,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
       correctAnswer: `\\${other}^2\\alpha`,
       distractors: [`\\${func}^2\\alpha`, `1`, `2\\${other}\\alpha`],
       steps: [`$$1 - \\${func}^2\\alpha = \\${other}^2\\alpha$$`],
+      questionType: "closed",
     });
   }
 
@@ -129,6 +135,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
       correctAnswer: targetVal,
       distractors: [`\\frac{${c - a}}{${c}}`, `\\frac{${a}}{${b}}`, `1`],
       steps: [`$$1 - (\\frac{${givenFunc === "sin" ? a : b}}{${c}})^2$$`],
+      questionType: "closed",
     });
   }
 
@@ -145,6 +152,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
       correctAnswer: `0`,
       distractors: [`1`, `-1`, `2\\sin ${alpha}^\\circ`],
       steps: [`$$\\cos ${beta}^\\circ = \\sin ${alpha}^\\circ$$`],
+      questionType: "closed",
     });
   }
 
@@ -161,13 +169,13 @@ class TrigIdentitiesGenerator extends BaseGenerator {
       correctAnswer: `\\frac{${a}}{${b}}`,
       distractors: [`\\frac{${b}}{${a}}`, `\\frac{${a}}{${c}}`, `1`],
       steps: [`$$\\tg\\alpha = \\sin\\alpha / \\cos\\alpha$$`],
+      questionType: "closed",
     });
   }
 
   generateTanProductReduction() {
     let angle;
-    if (this.difficulty === "easy")
-      angle = 30;
+    if (this.difficulty === "easy") angle = 30;
     else angle = MathUtils.randomInt(10, 40);
     const compl = 90 - angle;
     return this.createResponse({
@@ -178,6 +186,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
       correctAnswer: `1`,
       distractors: [`0`, `\\frac{1}{2}`, `\\sqrt{3}`],
       steps: [`$$\\tg ${compl}^\\circ = \\frac{1}{\\tg ${angle}^\\circ}$$`],
+      questionType: "closed",
     });
   }
 }

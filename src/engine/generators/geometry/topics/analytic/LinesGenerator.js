@@ -95,8 +95,8 @@ class LinesGenerator extends BaseGenerator {
     const eq2 = this.formatLineEquation(a2, b2);
 
     return this.createResponse({
-      question: `Wyznacz równanie prostej l przechodzącej przez punkt $$P$$ i ${mode === "parallel" ? "równoległej" : "prostopadłej"} do prostej $$k$$:`,
-      latex: `k: y=${eq1}, P=(${P.x}, ${P.y})`,
+      question: `Wyznacz równanie prostej l przechodzącej przez punkt $$P=(${P.x}, ${P.y})$$ i ${mode === "parallel" ? "równoległej" : "prostopadłej"} do prostej $$k$$:`,
+      latex: `k: y=${eq1}`,
       image: null,
       variables: { a2, b2 },
       correctAnswer: `l: y=${eq2}`,
@@ -336,7 +336,7 @@ class LinesGenerator extends BaseGenerator {
     return this.createResponse({
       question:
         "Wyznacz równanie symetralnej odcinka AB, gdzie A(-2,0) i B(2,4).",
-      latex: `A(-2,0), B(2,4)`,
+      latex: null,
       image: null,
       variables: { S },
       correctAnswer: `y=-x+2`,

@@ -44,7 +44,7 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
     const item = MathUtils.randomElement(exprs);
 
     return this.createResponse({
-      question: `Wartość wyrażenia $$${item.q}$$ jest równa:`,
+      question: `Oblicz wartość wyrażenia $$${item.q}$$`,
       latex: ``,
       image: null,
       variables: {},
@@ -56,6 +56,8 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
         `Podstawiamy wartości z tabeli trygonometrycznej:`,
         `$$${item.q} = ${item.s}$$`,
       ],
+      questionType: "open",
+      answerFormat: "number",
     });
   }
 
@@ -92,6 +94,7 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
         .filter((x) => x !== `${item.ang}^\\circ`)
         .slice(0, 3),
       steps: [`Odczytujemy z tablic wartości funkcji trygonometrycznych.`],
+      questionType: "closed",
     });
   }
 
@@ -129,6 +132,7 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
         `Funkcja $$y=\\${func} x$$ w przedziale $$(0^\\circ, 90^\\circ)$$ jest ${isGrowing ? "rosnąca" : "malejąca"}.`,
         `Ponieważ $$${minA} < ${maxA}$$, to $$\\${func} ${minA}^\\circ ${sign} \\${func} ${maxA}^\\circ$$.`,
       ],
+      questionType: "closed",
     });
   }
 
@@ -143,7 +147,7 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
     const val = parseFloat(Math.sin((angle * Math.PI) / 180).toFixed(4));
 
     return this.createResponse({
-      question: `Z tablic trygonometrycznych odczytano, że $$\\sin ${angle}^\\circ \\approx ${val}$$. Zatem $$\\cos ${90 - angle}^\\circ$$ jest w przybliżeniu równy:`,
+      question: `Z tablic trygonometrycznych odczytano, że $$\\sin ${angle}^\\circ \\approx ${val}$$. Oblicz przybliżoną wartość wyrażenia $$\\cos ${90 - angle}^\\circ$$`,
       latex: ``,
       image: null,
       variables: { angle, val },
@@ -157,6 +161,8 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
         `Korzystamy ze wzoru redukcyjnego: $$\\cos(90^\\circ - \\alpha) = \\sin\\alpha$$.`,
         `Zatem $$\\cos ${90 - angle}^\\circ = \\sin ${angle}^\\circ \\approx ${val}$$`,
       ],
+      questionType: "open",
+      answerFormat: "Odpowiedź podaj do czterech miejsc po przecinku.",
     });
   }
 }

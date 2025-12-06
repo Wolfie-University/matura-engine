@@ -115,7 +115,7 @@ class SimpleRulesGenerator extends BaseGenerator {
       setName = "nieparzystych";
     } else if (setType === "small") {
       setDigits = [1, 2, 3, 4];
-      setName = "należących do zbioru \\{1, 2, 3, 4\\}";
+      setName = "należących do zbioru {1, 2, 3, 4}";
     } else {
       setDigits = [2, 3, 5, 7];
       setName = "będących cyframi pierwszymi";
@@ -131,7 +131,7 @@ class SimpleRulesGenerator extends BaseGenerator {
       image: null,
       variables: { n, k, setType },
       correctAnswer: `${res}`,
-      distractors: [`${Math.pow(10, n)}`, `${n * k}`, `${Math.pow(n, k)}`],
+      distractors: [`${Math.pow(10, n)}`, `${n * k}`, `${Math.pow(n - 1, k)}`],
       steps: [
         `Dostępne cyfry to: $$${setDigits.join(", ")}$$. Jest ich $$${k}$$.`,
         `$$${Array(n).fill(k).join(" \\cdot ")} = ${k}^{${n}} = ${res}$$`,
