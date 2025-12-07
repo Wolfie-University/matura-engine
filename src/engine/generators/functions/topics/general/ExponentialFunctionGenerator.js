@@ -53,7 +53,7 @@ class ExponentialFunctionGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: `Funkcja wykładnicza określona wzorem $$f(x) = a^x$$ przyjmuje dla argumentu $$${scenario.x}$$ wartość $$${scenario.y}$$. Ile wynosi podstawa $$a$$ tej funkcji?`,
-      latex: `f(${scenario.x}) = ${scenario.y}`,
+      latex: null,
       image: null,
       variables: { scenario },
       correctAnswer: correctA,
