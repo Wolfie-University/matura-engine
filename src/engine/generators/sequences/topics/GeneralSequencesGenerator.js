@@ -105,7 +105,7 @@ class GeneralSequencesGenerator extends BaseGenerator {
           `$$${a}n + ${b} > 0 \\implies n < ${parseFloat(limit.toFixed(2))} \\implies n \\in \\{1, ..., ${count}\\}$$`,
         ],
         questionType: "open",
-        answerType: "number",
+        answerFormat: "number",
       });
     } else {
       return this.generateQuadraticSequencePos();
@@ -163,7 +163,7 @@ class GeneralSequencesGenerator extends BaseGenerator {
         `Parabola w dół, dodatnia między $$${x1}$$ a $$${x2}$$. Ilość liczb całkowitych: $$${count}$$.`,
       ],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 
@@ -183,7 +183,7 @@ class GeneralSequencesGenerator extends BaseGenerator {
       distractors: [`${r + 1}`, `${avg - a1}`, `${r * 2}`],
       steps: [`$$a_3 = ${avg} = a_1 + 2r \\implies r = ${r}$$`],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 

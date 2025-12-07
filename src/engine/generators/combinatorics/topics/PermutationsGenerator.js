@@ -28,7 +28,7 @@ class PermutationsGenerator extends BaseGenerator {
         `$$${n}! = ${res}$$`,
       ],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 
@@ -49,8 +49,8 @@ class PermutationsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: `Mamy do dyspozycji $$${k}$$ kolorów materiału. Szyjemy flagę z trzech poziomych pasów jednakowej szerokości. Ile różnych flag można uszyć, jeśli kolory pasów ${distinct ? "nie mogą się powtarzać" : "mogą się powtarzać"}?`,
-      latex: `k=${k}`,
-      image: this.generateSVG({ type: "flag" }),
+      latex: null,
+      image: null,
       variables: { k, distinct },
       correctAnswer: `${res}`,
       distractors: [
@@ -67,7 +67,7 @@ class PermutationsGenerator extends BaseGenerator {
           : `$$${k} \\cdot ${k} \\cdot ${k} = ${res}$$`,
       ],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 

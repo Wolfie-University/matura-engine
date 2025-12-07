@@ -67,7 +67,7 @@ class ExponentialFunctionGenerator extends BaseGenerator {
         `$$a = ${correctA}$$`,
       ],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 }

@@ -66,7 +66,7 @@ class CombinationsGenerator extends BaseGenerator {
           : `$$${n1} \\cdot ${n2} \\cdot ${n3} = ${total}$$`,
       ],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 
@@ -93,7 +93,7 @@ class CombinationsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: q,
-      latex: `n=${n}`,
+      latex: null,
       image: null,
       variables: { n },
       correctAnswer: `${result}`,
@@ -103,7 +103,7 @@ class CombinationsGenerator extends BaseGenerator {
         `$$\\frac{${n}\\cdot${n - 1}}{2} = \\frac{${n * (n - 1)}}{2} = ${result}$$`,
       ],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 
@@ -139,7 +139,7 @@ class CombinationsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: `Z grupy liczącej $$${total}$$ osób wybieramy ${groupName} delegację. Na ile sposobów można to zrobić?`,
-      latex: `n=${total}, k=${k}`,
+      latex: null,
       image: null,
       variables: { total, k },
       correctAnswer: `${res}`,
@@ -155,7 +155,7 @@ class CombinationsGenerator extends BaseGenerator {
         `$$${stepsCalc}$$`,
       ],
       questionType: "open",
-      answerType: "number",
+      answerFormat: "number",
     });
   }
 }
