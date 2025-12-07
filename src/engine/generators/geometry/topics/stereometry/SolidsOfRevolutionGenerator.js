@@ -21,23 +21,65 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
 
     const [r, h, l] = MathUtils.randomElement(triples);
     const mode = MathUtils.randomElement(["find_l", "find_h"]);
+    const correctVal = mode === "find_l" ? l : h;
+
+    const candidates = [];
+
+    if (mode === "find_l") {
+      candidates.push(r + h);
+      candidates.push(Math.abs(h - r));
+      candidates.push(Math.sqrt(Math.abs(h * h - r * r)).toFixed(2));
+      candidates.push(l + 1);
+      candidates.push(l - 1);
+      candidates.push(Math.max(r, h));
+    } else {
+      candidates.push(Math.sqrt(l * l + r * r).toFixed(2));
+      candidates.push(l + r);
+      candidates.push(l - r);
+      candidates.push(h + 1);
+      candidates.push(h - 1);
+      candidates.push(l);
+    }
+
+    const uniqueDistractors = [];
+    const usedValues = new Set();
+    usedValues.add(Number(correctVal));
+
+    for (const val of candidates) {
+      const numVal = Number(val);
+      if (numVal > 0 && !usedValues.has(numVal)) {
+        const valStr = Number.isInteger(numVal) ? `${numVal}` : `${val}`;
+        uniqueDistractors.push(valStr);
+        usedValues.add(numVal);
+      }
+      if (uniqueDistractors.length === 3) break;
+    }
+
+    let offset = 2;
+    while (uniqueDistractors.length < 3) {
+      const val = correctVal + offset;
+      if (val > 0 && !usedValues.has(val)) {
+        uniqueDistractors.push(`${val}`);
+        usedValues.add(val);
+      }
+      offset = offset > 0 ? -offset : -offset + 1;
+    }
+
     return this.createResponse({
       question:
         mode === "find_l"
-          ? `Wysokość stożka wynosi $$h=${h}$$, promień $$r=${r}$$. Tworząca $$l$$ ma długość:`
-          : `Tworząca stożka wynosi $$l=${l}$$, promień $$r=${r}$$. Wysokość $$h$$ wynosi:`,
-      latex: mode === "find_l" ? `h=${h}, r=${r}` : `l=${l}, r=${r}`,
-      image: StereometrySVGUtils.generateSVG({ type: "cone", r, h }),
+          ? `Wysokość stożka $$h=${h}$$, promień $$r=${r}$$. Tworząca $$l$$ ma długość:`
+          : `Tworząca stożka $$l=${l}$$, promień $$r=${r}$$. Wysokość $$h$$ wynosi:`,
+      latex: null,
+      image: null,
       variables: { r, h, l },
-      correctAnswer: mode === "find_l" ? `${l}` : `${h}`,
-      distractors: [
-        `${r + h}`,
-        `${Math.abs(h - r)}`,
-        `${Math.sqrt(h * h + r * r).toFixed(1)}`,
-      ],
+      correctAnswer: `${correctVal}`,
+      distractors: uniqueDistractors,
       steps: [
-        `Z twierdzenia Pitagorasa: $$r^2 + h^2 = l^2$$`,
-        `Podstawiamy dane i obliczamy brakujący bok.`,
+        `Z twierdzenia Pitagorasa dla przekroju osiowego stożka: $$r^2 + h^2 = l^2$$`,
+        mode === "find_l"
+          ? `$$l^2 = ${r}^2 + ${h}^2 = ${r * r} + ${h * h} = ${l * l} \\implies l=${l}$$`
+          : `$$h^2 = l^2 - r^2 = ${l}^2 - ${r}^2 = ${l * l} - ${r * r} = ${h * h} \\implies h=${h}$$`,
       ],
       questionType: "closed",
     });
@@ -92,12 +134,8 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: `Przekrój osiowy walca jest prostokątem o wymiarach $$${2 * r} \\times ${h}$$ (średnica $$\\times$$ wysokość). Oblicz długość przekątnej tego przekroju.`,
-      latex: `2r=${2 * r}, h=${h}`,
-      image: StereometrySVGUtils.generateSVG({
-        type: "cylinder_section",
-        r,
-        h,
-      }),
+      latex: null,
+      image: null,
       variables: { r, h, diag },
       correctAnswer: `${diag}`,
       distractors: [
@@ -138,8 +176,8 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
 
       return this.createResponse({
         question: `Promień kuli jest równy $$${r}$$. Objętość tej kuli wynosi:`,
-        latex: `r=${r}`,
-        image: StereometrySVGUtils.generateSVG({ type: "sphere", r: r }),
+        latex: null,
+        image: null,
         variables: { r, V: num / den },
         correctAnswer: `${V_str}\\pi`,
         distractors: [
@@ -156,8 +194,8 @@ class SolidsOfRevolutionGenerator extends BaseGenerator {
       const P = 4 * r * r;
       return this.createResponse({
         question: `Promień kuli jest równy $$${r}$$. Pole powierzchni tej kuli wynosi:`,
-        latex: `r=${r}`,
-        image: StereometrySVGUtils.generateSVG({ type: "sphere", r }),
+        latex: null,
+        image: null,
         variables: { r, P },
         correctAnswer: `${P}\\pi`,
         distractors: [`${r * r}\\pi`, `${2 * r * r}\\pi`, `${P / 4}\\pi`],

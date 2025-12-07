@@ -15,8 +15,8 @@ class CubesGenerator extends BaseGenerator {
     if (mode === "given_edge") {
       return this.createResponse({
         question: `Krawędź sześcianu ma długość $$${a}$$. Długość przekątnej tego sześcianu jest równa:`,
-        latex: `a = ${a}`,
-        image: StereometrySVGUtils.generateSVG({ type: "cube", a }),
+        latex: null,
+        image: null,
         variables: { a },
         correctAnswer: `${a}\\sqrt{3}`,
         distractors: [`${a}\\sqrt{2}`, `${3 * a}`, `${a * a}`],
@@ -30,8 +30,8 @@ class CubesGenerator extends BaseGenerator {
       const V = a * a * a;
       return this.createResponse({
         question: `Przekątna sześcianu ma długość $$${a}\\sqrt{3}$$. Objętość tego sześcianu wynosi:`,
-        latex: `D = ${a}\\sqrt{3}`,
-        image: StereometrySVGUtils.generateSVG({ type: "cube", a }),
+        latex: null,
+        image: null,
         variables: { a, V },
         correctAnswer: `${V}`,
         distractors: [`${3 * a}`, `${a * a}`, `${Math.floor(V / 3)}`],
@@ -67,12 +67,8 @@ class CubesGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: `Podstawą prostopadłościanu jest kwadrat o boku $$${a}$$. Przekątna bryły tworzy z płaszczyzną podstawy kąt $$${angle}^\\circ$$. Oblicz wysokość bryły.`,
-      latex: `a=${a}, \\alpha=${angle}^\\circ`,
-      image: StereometrySVGUtils.generateSVG({
-        type: "cuboid_angle",
-        a,
-        angle,
-      }),
+      latex: null,
+      image: null,
       variables: { a, angle },
       correctAnswer: H_latex,
       distractors: [
@@ -101,26 +97,55 @@ class CubesGenerator extends BaseGenerator {
     const c = MathUtils.randomInt(range[0], range[1]);
 
     const sumSq = a * a + b * b + c * c;
-    const diagStr = Number.isInteger(Math.sqrt(sumSq))
-      ? `${Math.sqrt(sumSq)}`
-      : `\\sqrt{${sumSq}}`;
+
+    const formatSqrt = (val) => {
+      return Number.isInteger(Math.sqrt(val))
+        ? `${Math.sqrt(val)}`
+        : `\\sqrt{${val}}`;
+    };
+
+    const diagStr = formatSqrt(sumSq);
+
+    const candidates = [
+      formatSqrt(a * a + b * b),
+      formatSqrt(a * a + c * c),
+      `${a + b + c}`,
+      formatSqrt(sumSq - c * c),
+      formatSqrt(sumSq + a * a),
+      formatSqrt(Math.abs(sumSq - 10)),
+      `${a * b * c}`,
+      formatSqrt(sumSq * 2),
+    ];
+
+    const uniqueDistractors = [];
+    const usedValues = new Set();
+    usedValues.add(diagStr);
+
+    for (const val of candidates) {
+      if (!usedValues.has(val)) {
+        uniqueDistractors.push(val);
+        usedValues.add(val);
+      }
+      if (uniqueDistractors.length === 3) break;
+    }
+
+    let offset = 1;
+    while (uniqueDistractors.length < 3) {
+      const val = formatSqrt(sumSq + offset);
+      if (!usedValues.has(val)) {
+        uniqueDistractors.push(val);
+        usedValues.add(val);
+      }
+      offset = offset > 0 ? -offset : -offset + 1;
+    }
 
     return this.createResponse({
       question: `Wymiary prostopadłościanu są równe: $$a=${a}$$, $$b=${b}$$, $$c=${c}$$. Długość przekątnej tego prostopadłościanu wynosi:`,
-      latex: `a=${a}, b=${b}, c=${c}`,
-      image: StereometrySVGUtils.generateSVG({
-        type: "cuboid_diagonal",
-        a,
-        b,
-        c,
-      }),
+      latex: null,
+      image: null,
       variables: { a, b, c },
       correctAnswer: `${diagStr}`,
-      distractors: [
-        `\\sqrt{${a * a + b * b}}`,
-        `${a + b + c}`,
-        `\\sqrt{${sumSq - c * c}}`,
-      ],
+      distractors: uniqueDistractors,
       steps: [
         `Wzór na długość przekątnej prostopadłościanu: $$d = \\sqrt{a^2 + b^2 + c^2}$$`,
         `$$d = \\sqrt{${a}^2 + ${b}^2 + ${c}^2}$$`,
