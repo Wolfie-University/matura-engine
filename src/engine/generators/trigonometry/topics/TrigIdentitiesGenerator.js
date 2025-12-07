@@ -129,7 +129,7 @@ class TrigIdentitiesGenerator extends BaseGenerator {
     const targetVal = `\\frac{${givenFunc === "sin" ? b : a}}{${c}}`;
     return this.createResponse({
       question: `Kąt $$\\alpha$$ jest ostry i $$${givenFunc} \\alpha = ${givenVal}$$. Wartość $$${targetFunc} \\alpha$$ jest równa:`,
-      latex: `${givenFunc} \\alpha = ${givenVal}`,
+      latex: null,
       image: null,
       variables: { a, b, c },
       correctAnswer: targetVal,

@@ -147,7 +147,7 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
     const val = parseFloat(Math.sin((angle * Math.PI) / 180).toFixed(4));
 
     return this.createResponse({
-      question: `Z tablic trygonometrycznych odczytano, że $$\\sin ${angle}^\\circ \\approx ${val}$$. Oblicz przybliżoną wartość wyrażenia $$\\cos ${90 - angle}^\\circ$$`,
+      question: `Z tablic trygonometrycznych wiadomo, że $$\\sin ${angle}^\\circ \\approx ${val}$$. Oblicz przybliżoną wartość wyrażenia $$\\cos ${90 - angle}^\\circ$$.`,
       latex: ``,
       image: null,
       variables: { angle, val },
@@ -162,7 +162,7 @@ class TrigValuesAndPropertiesGenerator extends BaseGenerator {
         `Zatem $$\\cos ${90 - angle}^\\circ = \\sin ${angle}^\\circ \\approx ${val}$$`,
       ],
       questionType: "open",
-      answerFormat: "Odpowiedź podaj do czterech miejsc po przecinku.",
+      answerFormat: "specific: Odpowiedź podaj do 4 miejsc po przecinku.",
     });
   }
 }
