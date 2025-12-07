@@ -26,12 +26,36 @@ class IntervalsGenerator extends BaseGenerator {
     const isInside = sign === "<" || sign === "\\le";
     const isClosed = sign === "\\le" || sign === "\\ge";
 
-    const bL = isClosed ? "\\langle" : "(";
-    const bR = isClosed ? "\\rangle" : ")";
+    const formatSet = (s, e, inside, closed) => {
+      const bL = closed ? "\\langle" : "(";
+      const bR = closed ? "\\rangle" : ")";
+      return inside
+        ? `x \\in ${bL} ${s}, ${e} ${bR}`
+        : `x \\in (- \\infty, ${s} ${bR} \\cup ${bL} ${e}, \\infty)`;
+    };
 
-    const interval = isInside
-      ? `${bL} ${x1}, ${x2} ${bR}`
-      : `(- \\infty, ${x1} ${bR} \\cup ${bL} ${x2}, \\infty)`;
+    const correctAns = formatSet(x1, x2, isInside, isClosed);
+
+    const candidates = [
+      formatSet(x1, x2, !isInside, isClosed),
+      formatSet(-a - b, -a + b, isInside, isClosed),
+      formatSet(-b, b, isInside, isClosed),
+      formatSet(-a - b, -a + b, !isInside, isClosed),
+      formatSet(x1, x2, isInside, !isClosed),
+    ];
+
+    let uniqueDistractors = [...new Set(candidates)].filter(
+      (d) => d !== correctAns,
+    );
+
+    while (uniqueDistractors.length < 3) {
+      const filler = formatSet(x1 + 1, x2 + 1, isInside, isClosed);
+      if (filler !== correctAns && !uniqueDistractors.includes(filler)) {
+        uniqueDistractors.push(filler);
+      } else {
+        uniqueDistractors.push(formatSet(-100, 100, true, true));
+      }
+    }
 
     return this.createResponse({
       question:
@@ -45,18 +69,12 @@ class IntervalsGenerator extends BaseGenerator {
         type: "inequality",
       }),
       variables: { a, b, sign },
-      correctAnswer: `x \\in ${interval}`,
-      distractors: [
-        isInside
-          ? `x \\in (- \\infty, ${x1} ${bR} \\cup ${bL} ${x2}, \\infty)`
-          : `x \\in ${bL} ${x1}, ${x2} ${bR}`,
-        `x \\in ${bL} ${-b}, ${b} ${bR}`,
-        `x \\in (- \\infty, ${-b} ${bR} \\cup ${bL} ${b}, \\infty)`,
-      ],
+      correctAnswer: correctAns,
+      distractors: uniqueDistractors.slice(0, 3),
       steps: [
         `Środek przedziału to $$a = ${a}$$, a promień (odległość od środka) to $$b = ${b}$$.`,
         `Szukamy liczb, których odległość od $$${a}$$ jest ${isInside ? "mniejsza" : "większa"} ${isClosed ? "lub równa" : ""} $$${b}$$.`,
-        `Odp: $$${interval}$$`,
+        `Odpowiedź: $$${correctAns}$$`,
       ],
       questionType: "closed",
     });
@@ -127,9 +145,9 @@ class IntervalsGenerator extends BaseGenerator {
       variables: { a, b, op },
       correctAnswer: result,
       distractors: [
-        `\\emptyset`,
-        `\\mathbb{R}`,
-        `(- \\infty, ${b} ${bracketB}`,
+        `(${a}, ${b})`,
+        `\\langle ${a}, ${b} \\rangle`,
+        `\\mathbb{R}``(- \\infty, ${b} ${bracketB}`,
       ],
       steps: [
         `Zaznaczamy przedziały na osi liczbowej.`,
