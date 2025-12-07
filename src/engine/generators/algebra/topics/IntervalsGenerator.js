@@ -36,9 +36,7 @@ class IntervalsGenerator extends BaseGenerator {
     return this.createResponse({
       question:
         "Zbiór rozwiązań nierówności jest zaznaczony na osi liczbowej. Wybierz poprawny zbiór.",
-      latex: `|x - (${a}| ${sign} ${b}`
-        .replace("- (-", "+ ")
-        .replace("- (", "- "),
+      latex: null,
       image: this.generateNumberLineSVG({
         center: a,
         points: [x1, x2],
@@ -53,6 +51,7 @@ class IntervalsGenerator extends BaseGenerator {
           ? `x \\in (- \\infty, ${x1} ${bR} \\cup ${bL} ${x2}, \\infty)`
           : `x \\in ${bL} ${x1}, ${x2} ${bR}`,
         `x \\in ${bL} ${-b}, ${b} ${bR}`,
+        `x \\in (- \\infty, ${-b} ${bR} \\cup ${bL} ${b}, \\infty)`,
       ],
       steps: [
         `Środek przedziału to $$a = ${a}$$, a promień (odległość od środka) to $$b = ${b}$$.`,

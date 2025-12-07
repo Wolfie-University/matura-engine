@@ -41,7 +41,7 @@ class BasicOperationsGenerator extends BaseGenerator {
       distractors: [
         `${base}^{${n + k - m}}`,
         `${base}^{${finalExp * -1}}`,
-        `${baseSq}^{${finalExp}}`,
+        `${baseSq}^{${finalExp + 1}}`,
       ],
       steps: [
         `Sprowadzamy do podstawy $$${base}$$: $$${baseSq} = ${base}^2$$.`,
