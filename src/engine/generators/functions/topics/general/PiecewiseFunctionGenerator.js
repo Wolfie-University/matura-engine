@@ -53,7 +53,7 @@ class PiecewiseFunctionGenerator extends BaseGenerator {
     const total = res1 + res2;
 
     return this.createResponse({
-      question: `Funkcja $$f$$ jest określona wzorem: $$f(x) = \\begin{cases} ${f1_tex} & \\text{dla } x < ${cut} \\\\ ${f2_tex} & \\text{dla } x \\ge ${cut} \\end{cases}$$. Wartość wyrażenia $$f(${val1}) + f(${val2})$$ jest równa:`,
+      question: `Funkcja $$f$$ jest określona wzorem: $$f(x) = \\begin{cases} ${f1_tex} & \\text{dla } x < ${cut} \\\\ ${f2_tex} & \\text{dla } x \\ge ${cut} \\end{cases}$$ Wartość wyrażenia $$f(${val1}) + f(${val2})$$ jest równa:`,
       latex: ``,
       image: null,
       variables: { cut, val1, val2, res1, res2 },
