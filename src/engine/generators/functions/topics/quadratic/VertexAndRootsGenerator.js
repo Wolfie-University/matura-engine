@@ -72,16 +72,7 @@ class VertexAndRootsGenerator extends BaseGenerator {
     return this.createResponse({
       question: "Podaj miejsca zerowe funkcji:",
       latex: `f(x) = ${MathUtils.formatPolynomial(a, b, c)}`,
-      image: SVGUtils.generateSVG({
-        a,
-        b,
-        c,
-        p,
-        q,
-        x1,
-        x2,
-        highlight: "roots",
-      }),
+      image: null,
       variables: { a, b, c, x1, x2 },
       correctAnswer: `${roots[0]}, ${roots[1]}`,
       distractors: [
