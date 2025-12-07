@@ -69,7 +69,7 @@ class TransformationsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: `Wykres funkcji $$g$$ powstał przez przekształcenie wykresu funkcji $$f(x) = ${f_latex}$$ w symetrii względem ${typeName}. Funkcja $$g$$ jest określona wzorem:`,
-      latex: ``,
+      latex: null,
       image: null,
       variables: { type, baseFunc },
       correctAnswer: `g(x) = ${g_latex}`,
@@ -152,7 +152,7 @@ class TransformationsGenerator extends BaseGenerator {
 
     return this.createResponse({
       question: `Wykres funkcji $$g$$ powstał przez przesunięcie wykresu funkcji $$${baseFuncLatex}$$ o wektor $$v=[${p}, ${q}]$$. Wyznacz wzór funkcji $$g$$.`,
-      latex: `v=[${p}, ${q}]`,
+      latex: null,
       image: null,
       variables: { p, q, type },
       correctAnswer: `g(x) = ${shiftedFuncLatex}`,
